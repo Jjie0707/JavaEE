@@ -12,7 +12,7 @@ public class demo1 {
         for(int i=0;i<nums.length;i++) nums[i]=in.nextInt();
         int left=0,right=nums.length-1;
         Arrays.sort(nums);
-        int ret=0;
+        long ret=0;
         while(right-left+1>=3){
             ret+=nums[right-1];
             left++;
