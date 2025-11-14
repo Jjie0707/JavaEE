@@ -6,44 +6,46 @@ import java.util.*;
 public class Q1 {
     public static PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
     public static Read in = new Read();
-    public static HashMap<Integer,Integer> cnt;  //用来统计入度的哈希表
+
+    public static int[] cnt;  //用来统计入度的哈希表
     public static HashMap<Integer,ArrayList<Integer>> edges;  //用来建图
     public static int n,m;
+
     public static void main(String[] args) throws IOException {
-        // 写代码
-        cnt=new HashMap<>();
         edges=new HashMap<>();
 
-        n=in.nextInt();m= in.nextInt();
+        n=in.nextInt();
+        m= in.nextInt();
+        cnt=new int[n+1];
+
         for(int i=0;i<m;i++){
-            int a=in.nextInt(),b= in.nextInt();
-            cnt.put(b,cnt.getOrDefault(b,0)+1);
+            int a=in.nextInt(),b=in.nextInt();
+            cnt[b]++;
             if(!edges.containsKey(a)) edges.put(a,new ArrayList<>());
             edges.get(a).add(b);
         }
         LinkedList<Integer> q=new LinkedList<>();
-        for(int tem:edges.keySet()){
-            if(!cnt.containsKey(tem)){
-                q.addLast(tem);
+        for(int i=1;i<=n;i++){
+            if(cnt[i]==0){
+                q.addLast(i);
             }
         }
         //走到这里建图完成
         int[] ret=new int[n];
         int pos=0;
+
         while(!q.isEmpty()){
             int tem=q.removeFirst();
             ret[pos++]=tem;
-            for(int a:edges.get(tem)){
-                cnt.put(a,cnt.get(a)-1);
-                if(cnt.get(a)==0) {
+            for(int a:edges.getOrDefault(tem,new ArrayList<>())){
+                cnt[a]--;
+                if(cnt[a]==0) {
                     q.addLast(a);
-                    cnt.remove(a);
-                    ret[pos++]=a;
                 }
             }
         }
         if(pos==n){
-            for(int i=0;i<n--;i++){
+            for(int i=0;i<n-1;i++){
                 System.out.print(ret[i]+" ");
             }
             System.out.print(ret[n-1]);
