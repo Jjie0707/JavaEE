@@ -3,7 +3,7 @@ package jjie._0320;
 public class Person {
     private String name;
     private String sex;
-    private Integer age;
+    private int age;
 
     public String getName() {
         return name;
