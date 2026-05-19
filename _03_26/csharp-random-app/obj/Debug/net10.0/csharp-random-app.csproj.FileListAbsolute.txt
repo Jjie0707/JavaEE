@@ -1,0 +1,15 @@
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/bin/Debug/net10.0/csharp-random-app
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/bin/Debug/net10.0/csharp-random-app.deps.json
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/bin/Debug/net10.0/csharp-random-app.runtimeconfig.json
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/bin/Debug/net10.0/csharp-random-app.dll
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/bin/Debug/net10.0/csharp-random-app.pdb
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.AssemblyInfoInputs.cache
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.AssemblyInfo.cs
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.csproj.CoreCompileInputs.cache
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.sourcelink.json
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.dll
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/refint/csharp-random-app.dll
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.pdb
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/csharp-random-app.genruntimeconfig.cache
+/Users/ouyangjunjie/Desktop/GitHub/JavaEE/_03_26/csharp-random-app/obj/Debug/net10.0/ref/csharp-random-app.dll

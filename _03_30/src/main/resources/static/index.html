@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板</title>
+    <style>
+        .container {
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            /* border: 1px black solid; */
+            text-align: center;
+        }
+
+        .grey {
+            color: grey;
+        }
+
+        .container .row {
+            width: 350px;
+            height: 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container .row input {
+            width: 260px;
+            height: 30px;
+        }
+
+        #submit {
+            width: 350px;
+            height: 40px;
+            background-color: orange;
+            color: white;
+            border: none;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+    </style>
+    <script src="js/jquery-4.0.0.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <h1>留言板</h1>
+    <p class="grey">输入后点击提交, 会将信息显示下方空白处</p>
+    <div class="row">
+        <span>谁:</span> <input type="text" name="" id="from">
+    </div>
+    <div class="row">
+        <span>对谁:</span> <input type="text" name="" id="to">
+    </div>
+    <div class="row">
+        <span>说什么:</span> <input type="text" name="" id="say">
+    </div>
+    <input type="button" value="提交" id="submit" onclick="submit()">
+    <!-- <div>A 对 B 说: hello</div> -->
+</div>
+
+<script src="js/jquery-4.0.0.min.js"></script>
+<script>
+    getList();
+    function getList(){
+        $.ajax({
+            type:"get",
+            url:"message/getList",
+            contentType:"application/json",
+            success:function(list){
+                for(var element of list){
+                    var divE = "<div>" + element.from + "对" + element.to + "说:" + element.message + "</div>";
+                    $(".container").append(divE);
+                }
+            }
+        });
+    }
+    function submit() {
+        //1. 获取留言的内容
+        var from = $('#from').val();
+        var to = $('#to').val();
+        var say = $('#say').val();
+        if (from == '' || to == '' || say == '') {
+            return;
+        }
+        $.ajax({
+            type:"post",
+            url:"message/publish",
+            contentType:"application/json",
+            data:JSON.stringify({
+                from:from,
+                to:to,
+                message:say
+            }),
+            success:function(result) {
+                if (result){
+                    var divE = "<div>" + from + "对" + to + "说:" + say + "</div>";
+                    $(".container").append(divE);
+                    $('#from').val("");
+                    $('#to').val("");
+                    $('#say').val("");
+                    alert("发布成功!");
+                }else alert("发布失败!");
+            }
+        });
+    }
+
+</script>
+</body>
+
+</html>

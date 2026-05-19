@@ -1,0 +1,40 @@
+demo0:
+  age: 18
+  name: "zhangsan"
+demo1:
+  list:
+    - 12
+    - 34
+    - 46
+    - 352
+demo2:
+  num: 530
+demo3:
+  price: 520
+  name: 1314
+captcha:
+  width: 150
+  height: 50
+  codecount: 5
+  linecount: 150
+  session:
+    sessionName: sessionname
+    data:
+
+spring:
+# 项目名称配置
+  application:
+    name: spring-pra
+# 数据库连接配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mybatis_test?characterEncoding=utf8&useSSL=false
+    username: root
+    password: oyjj0822
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  configuration:
+#    自动转化驼峰和串型
+    map-underscore-to-camel-case: true
+    # 配置打印 MyBatis⽇志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/**.xml
