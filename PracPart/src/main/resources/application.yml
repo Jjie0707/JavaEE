@@ -16,7 +16,7 @@ captcha:
   width: 150
   height: 50
   codecount: 5
-  linecount: 150
+  linecount: 15
   session:
     sessionName: sessionname
     data:

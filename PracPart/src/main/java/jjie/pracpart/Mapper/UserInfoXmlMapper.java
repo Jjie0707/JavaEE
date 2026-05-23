@@ -8,6 +8,15 @@ import java.util.List;
 
 @Mapper
 public interface UserInfoXmlMapper {
-    List<UserInfo> selectAll() ;
-    int insertUser(@Param("userinfo") UserInfo userInfo);
+
+//    List<UserInfo> selectAll() ;
+//
+//    int insertUser(@Param("userinfo") UserInfo userInfo);
+//
+
+    int  insertByCondition(UserInfo userinfo);
+
+    List<UserInfo> selectByCondition(String username,Integer age);
+
+    int setByCondition(String username,Integer age);
 }
