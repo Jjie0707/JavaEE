@@ -1,4 +1,4 @@
-package daily;
+package jjie.pracpart.daily;
 
 public class _0509 {
     public static void main(String[] args) {
