@@ -1,23 +1,46 @@
 package jjie.lbsystem.service;
 
-import jjie.lbsystem.dao.BookDao;
 import jjie.lbsystem.entity.Book;
+import jjie.lbsystem.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
 
     @Autowired
-    private BookDao bookDao;
+    private BookMapper bookMapper;
 
-    public ArrayList<Book> bookService(){
-        ArrayList<Book> list=bookDao.mockBook() ;
+    public List<Book> serviceGetList(){
+        List<Book> list=bookMapper.getList() ;
         for(Book book:list){
-            book.setStatusCN(book.getStatus()==0 ? "不可借阅" : "可借阅");
+            book.setStatusCN(book.getStatus()==1 ? "可借阅" : "不可借阅");
         }
         return list;
+    }
+
+    public Integer serviceAddBook(Book book){
+        return bookMapper.addBook(book);
+    }
+
+    public boolean check(Book book){
+        if(!(StringUtils.hasLength(book.getBookName())) ||
+                book.getBookName().length()>=128) return false;
+
+        if(!(StringUtils.hasLength(book.getAuthor())) ||
+                book.getAuthor().length()>=128) return false;
+
+        if(book.getCount()==null || book.getCount()<=0) return false;
+
+        if(!(StringUtils.hasLength(book.getPublish())) ||
+                book.getPublish().length()>256) return false;
+
+        if(book.getStatus()==null) return false;
+
+        if(book.getStatus()==null || book.getStatus()==0) return false;
+        return true;
     }
 }

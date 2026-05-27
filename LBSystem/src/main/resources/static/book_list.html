@@ -39,22 +39,6 @@
                 </tr>
             </thead>
             <tbody id="bookTableBody">
-                <tr>
-                    <td><input type="checkbox" name="selectBook" value="1" id="selectBook" class="book-select"></td>
-                    <td>1</td>
-                    <td>大秦帝国第一册</td>
-                    <td>我是作者</td>
-                    <td>23</td>
-                    <td>33.00</td>
-                    <td>北京出版社</td>
-                    <td>可借阅</td>
-                    <td>
-                        <div class="op">
-                            <a href="book_update.html?bookId=1">修改</a>
-                            <a href="javascript:void(0)" onclick="deleteBook(1)">删除</a>
-                        </div>
-                    </td>
-                </tr>
             
             </tbody>
         </table>
@@ -75,8 +59,8 @@
                             return `
                                 <tr>
                                     <td><input type="checkbox" name="selectBook" value="${book.book_id}" class="book-select"></td>
-                                    <td>${book.book_id}</td>
-                                    <td>${book.name}</td>
+                                    <td>${book.id}</td>
+                                    <td>${book.bookName}</td>
                                     <td>${book.author}</td>
                                     <td>${book.count}</td>
                                     <td>${book.price}</td>

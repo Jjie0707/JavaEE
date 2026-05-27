@@ -64,8 +64,30 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script>
         function add() {
-            alert("添加成功");
-            location.href = "book_list.html";
+            var bookData = {
+                bookName: $("#bookName").val(),
+                author: $("#bookAuthor").val(),
+                count: parseInt($("#bookStock").val()), // 确保为整数
+                price: parseFloat($("#bookPrice").val()), // 确保为浮点数
+                publish: $("#bookPublisher").val(),
+                status: parseInt($("#bookStatus").val()) // 确保为整数
+            };
+            $.ajax({
+                url: "/system/addBook",  // 接口地址
+                type: "POST",
+                contentType: "application/json", // 设置请求内容类型为JSON
+                data: JSON.stringify(bookData), // 将表单数据序列化为JSON字符串
+                success: function(result) {
+                    if(result = true) { // 成功返回true
+                        alert("图书添加成功！");
+                        // 清空表单
+                        $("#addBook")[0].reset();
+                        window.location.href = "book_list.html";
+                    } else { // 失败返回false
+                        alert("图书添加失败，请重试！");
+                    }
+                }
+            });
         }
     </script>
 </body>

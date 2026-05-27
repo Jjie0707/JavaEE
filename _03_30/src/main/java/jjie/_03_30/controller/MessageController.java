@@ -1,17 +1,22 @@
-package jjie._03_30;
+package jjie._03_30.controller;
 
-import ch.qos.logback.core.util.StringUtil;
+import jjie._03_30.entity.MessageInfo;
+import jjie._03_30.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("message")
 public class MessageController {
-    static ArrayList<MessageInfo> list=new ArrayList<>();
+
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping("publish")
     public boolean publish(@RequestBody MessageInfo messageInfo){
@@ -20,13 +25,13 @@ public class MessageController {
             !StringUtils.hasLength(messageInfo.getMessage())){
             return false;
         }else{
-            list.add(messageInfo);
+            messageService.serviceInsertMessage(messageInfo);
         }
         return true;
     }
 
     @RequestMapping("getList")
-    public ArrayList<MessageInfo> getList(){
-        return list;
+    public List<MessageInfo> getList(){
+        return messageService.serviceGetList();
     }
 }
