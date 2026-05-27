@@ -1,6 +1,8 @@
 package jjie.lbsystem.service;
 
 import jjie.lbsystem.entity.Book;
+import jjie.lbsystem.entity.PageRequest;
+import jjie.lbsystem.entity.PageResponse;
 import jjie.lbsystem.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,27 @@ public class BookService {
 
         if(book.getStatus()==null || book.getStatus()==0) return false;
         return true;
+    }
+
+    public PageResponse serviceGetPageList(PageRequest pageRequest) {
+
+        List<Book> list=bookMapper.getPageList(pageRequest);
+        for(Book book:list){
+            if(book.getStatus()==1) book.setStatusCN("可借阅");
+            else book.setStatusCN("不可借阅");
+        }
+        Integer count=bookMapper.getCount();
+
+        PageResponse result=new PageResponse<>(count,list,pageRequest);
+        return result;
+    }
+
+    public Book serviceQueryById(Integer id){
+        return bookMapper.queryById(id);
+    }
+
+
+    public Integer serviceUpdateById(Book book) {
+        return bookMapper.updateById(book);
     }
 }
