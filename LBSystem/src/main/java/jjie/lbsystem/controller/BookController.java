@@ -7,10 +7,7 @@ import jjie.lbsystem.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +39,7 @@ public class BookController {
     @RequestMapping("getPageList")
     public PageResponse getPageList(PageRequest pageRequest){
 
+        if(pageRequest==null) return null;
         if(pageRequest.getCurrentPage()<=0) return null;
 
         PageResponse result=bookService.serviceGetPageList(pageRequest);
@@ -63,4 +61,21 @@ public class BookController {
         else return "数据更新失败";
     }
 
+    @RequestMapping("deleteById")
+    public String deleteById(Integer id){
+        if(id==null) return "参数不合法";
+
+        Integer result=bookService.serviceDeleteById(id);
+        if(result==1) return "";
+        else return "删除失败!";
+    }
+
+    @RequestMapping("batchDeleteById")
+    public String batchDelete(@RequestParam List<Integer> list){
+        if(list==null || list.size()==0) return "参数不合法";
+
+        Integer result = bookService.serviceBatchDelete(list);
+        if(result>0) return "";
+        else return "批量删除失败";
+    }
 }

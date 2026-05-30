@@ -8,11 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface UserInfoXmlMapper {
+    List<UserInfo> selectAll() ;
 
-//    List<UserInfo> selectAll() ;
-//
-//    int insertUser(@Param("userinfo") UserInfo userInfo);
-//
+    int insertUser(@Param("userinfo") UserInfo userInfo);
+
 
     int  insertByCondition(UserInfo userinfo);
 

@@ -22,12 +22,13 @@ public interface BookMapper {
     @Select("select count(1) from book_info")
     public Integer getCount();
 
-    @Select("select * from book_info limit #{offset},#{pageSize}")
+    @Select("select * from book_info where status != 0 limit #{offset},#{pageSize} ")
     public List<Book> getPageList(PageRequest pageRequest);
 
     @Select("select * from book_info where id=#{id}")
     public Book queryById(Integer id);
 
-
     public Integer updateById(Book book);
+
+    Integer batchDelete(List<Integer> list);
 }

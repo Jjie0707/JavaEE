@@ -64,11 +64,8 @@
             const bookId = new URLSearchParams(window.location.search).get("bookId");
             $.ajax({
                 type: 'get',
-                url:'/system/queryById',
+                url:'/system/queryById'+location.search,
                 contentType:'application/json',
-                data:{
-                    id: bookId
-                },
                 success:function(result){
                     $("#bookId").val(result.id);
                     $("#bookName").val(result.bookName);
@@ -89,6 +86,8 @@
                     if(result==""){
                         alert("修改成功!");
                         window.location.href = "book_list.html";
+                    }else{
+                        alert("修改失败!");
                     }
                 }
             })

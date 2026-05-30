@@ -31,9 +31,9 @@ spring:
     username: root
     password: oyjj0822
     driver-class-name: com.mysql.cj.jdbc.Driver
-mybatis:
+mybatis-plus:
   configuration:
-#    自动转化驼峰和串型
+    # 自动转化驼峰和串型
     map-underscore-to-camel-case: true
     # 配置打印 MyBatis⽇志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

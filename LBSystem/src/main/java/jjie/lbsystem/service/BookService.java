@@ -67,4 +67,14 @@ public class BookService {
     public Integer serviceUpdateById(Book book) {
         return bookMapper.updateById(book);
     }
+
+    public Integer serviceDeleteById(Integer id) {
+        Book book = bookMapper.queryById(id);
+        book.setStatus(0);
+        return bookMapper.updateById(book);
+    }
+
+    public Integer serviceBatchDelete(List<Integer> list) {
+        return bookMapper.batchDelete(list);
+    }
 }
