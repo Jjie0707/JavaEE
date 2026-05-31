@@ -1,5 +1,6 @@
 package jjie.lbsystem.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jjie.lbsystem.entity.User;
 import jjie.lbsystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +20,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("login")
-    public boolean logIn(@RequestBody User user){
+    public boolean logIn(@RequestBody User user, HttpSession session){
         if(!StringUtils.hasLength(user.getUserName()) ||
             !StringUtils.hasLength(user.getPassword())){
             return false;
         }
+
         Integer result=userService.serviceSelectByName(user.getUserName(),
                                                         user.getPassword());
         log.warn("查询的状态码是:"+result);
         if(result==0) return false;
+
+        session.setAttribute("login_status",true);
         return true;
     }
 }

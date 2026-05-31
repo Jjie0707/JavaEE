@@ -96,6 +96,11 @@
                             `;
                         }).join("");
                         $("#bookTableBody").html(finalHtml);
+                    },
+                    error: function(xhr){
+                        if(xhr.status == 401){
+                            location.href = "login.html";
+                        }
                     }
                 });
             }
