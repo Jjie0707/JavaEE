@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import jjie.mybatis_test.entity.UserInfo;
-import jjie.mybatis_test.mapper.UserInfoMapper;
+import  jjie.mybatis_test.mapper.UserInfoMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,9 +69,9 @@ class UserInfoServiceTest {
         userInfos.forEach(System.out::println);
     }
 
-
     @Test
     public void testSelectAll(){
+        //传一个空参 无条件筛选
         List<UserInfo> userInfos = userInfoMapper.selectList(new QueryWrapper<>());
         userInfos.forEach(System.out::println);
     }
