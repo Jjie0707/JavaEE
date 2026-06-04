@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>图书列表展示</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="css/list.css">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script src="js/jq-paginator.js"></script>
+    <link rel="stylesheet" href="/css/list.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/jq-paginator.js"></script>
 
 </head>
 
@@ -19,7 +19,7 @@
         <h2>图书列表展示</h2>
         <div class="navbar-justify-between">
             <div>
-                <button class="btn btn-outline-info" type="button" onclick="location.href='book_add.html'">添加图书</button>
+                <button class="btn btn-outline-info" type="button" onclick="location.href='/book_add.html'">添加图书</button>
                 <button class="btn btn-outline-info" type="button" onclick="batchDelete()">批量删除</button>
             </div>
         </div>
@@ -70,7 +70,7 @@
                                 console.log("第"+page+"页, 类型:"+type);
                                 if(type=='change'){
                                     //  只有type等于change(切换页面)才生效 不然会在init的时候一直闪屏
-                                    location.href = "book_list.html?currentPage="+page;
+                                    location.href = "/book_list.html?currentPage="+page;
                                 }
                             }
                         });
@@ -88,7 +88,7 @@
                                     <td>${book.statusCN}</td>
                                     <td>
                                         <div class="op">
-                                            <a href="book_update.html?id=${book.id}">修改</a>
+                                            <a href="/book_update.html?id=${book.id}">修改</a>
                                             <a href="javascript:void(0)" onclick="deleteBook(${book.id})">删除</a>
                                         </div>
                                     </td>
@@ -99,7 +99,7 @@
                     },
                     error: function(xhr){
                         if(xhr.status == 401){
-                            location.href = "login.html";
+                            location.href = "/login.html";
                         }
                     }
                 });
@@ -116,11 +116,9 @@
                         },
                         dataType: "json",
                         success:function(result){
-                            console.log(result);
-                            console.log(typeof(result));
                             if(result!=null && result.data==""){
                                 alert("删除成功");
-                                location.href = "book_list.html?";
+                                location.href = "/book_list.html?";
                             }else{
                                 alert("删除失败!重试!")
                             }
@@ -145,11 +143,9 @@
                         },
                         dataType: "json",
                         success:function(result){
-
-                            console.log(typeof(result));
                             if(result!=null && result.data==""){
                                 alert("批量删除成功");
-                                location.href = "book_list.html";
+                                location.href = "/book_list.html";
                             }else{
                                 alert("删除失败!重试!");
                             }

@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="container-login">
         <div class="container-pic">
-            <img src="pic/computer.png" width="350px">
+            <img src="/pic/computer.png" width="350px">
         </div>
         <div class="login-dialog">
             <h3>登陆</h3>
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script>
         function login() {
             $.ajax({
@@ -41,9 +41,10 @@
                         userName:$("#userName").val(),
                         password:$("#password").val()
                     }),
+                    dataType: "json",
                     success:function(result){
                         if(result!=null && result.data!=null && result.data){
-                            location.href = "book_list.html?currentPage=1";
+                            location.href = "/book_list.html?currentPage=1";
                         }else{
                             alert("账号或者密码错误!");
                         }

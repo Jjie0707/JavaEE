@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>添加图书</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/add.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/add.css">
 
 </head>
 
@@ -61,7 +61,7 @@
             </div>
         </form>
     </div>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script>
         function add() {
             var bookData = {
@@ -77,19 +77,20 @@
                 type: "POST",
                 contentType: "application/json", // 设置请求内容类型为JSON
                 data: JSON.stringify(bookData), // 将表单数据序列化为JSON字符串
+                dataType: "json",
                 success: function(result) {
                     if(result!=null && result.data==true) { // 成功返回true
                         alert("图书添加成功！");
                         // 清空表单
                         $("#addBook")[0].reset();
-                        window.location.href = "book_list.html";
+                        window.location.href = "/book_list.html";
                     } else { // 失败返回false
                         alert("图书添加失败，请重试！");
                     }
                 },
                 error: function(xhr){
                     if(xhr.status == 401){
-                        location.href = "login.html";
+                        location.href = "/login.html";
                     }
                 }
             });

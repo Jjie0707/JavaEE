@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>修改图书</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/add.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/add.css">
 </head>
 
 <body>
@@ -57,7 +57,7 @@
             </div>
         </form>
     </div>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script>
         queryBook()
         function queryBook(){
@@ -78,7 +78,7 @@
                 },
                 error: function(xhr){
                     if(xhr.status == 401){
-                        location.href = "login.html";
+                        location.href = "/login.html";
                     }
                 }
             })
@@ -88,17 +88,20 @@
                 type: 'post',
                 url: '/system/updateById',
                 data:$("#updateBook").serialize(),
-                contentType:"application/json",
                 dataType: "json",
                 success:function(result){
                     if(result!=null && result.data==""){
                         alert("修改成功!");
-                        window.location.href = "book_list.html";
+                        window.location.href = "/book_list.html";
                     }else{
                         alert("修改失败!");
                     }
                 },
-                
+                error: function(xhr){
+                    if(xhr.status == 401){
+                        location.href = "/login.html";
+                    }
+                }
             })
         }
     </script>
