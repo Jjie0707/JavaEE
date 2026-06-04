@@ -19,7 +19,7 @@ public interface BookMapper {
             "values (#{bookName},#{author},#{count},#{price},#{publish},#{status})")
     public Integer addBook(Book book);
 
-    @Select("select count(1) from book_info")
+    @Select("select count(1) from book_info where status!=0")
     public Integer getCount();
 
     @Select("select * from book_info where status != 0 limit #{offset},#{pageSize} ")

@@ -13,18 +13,18 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("system")
+@RequestMapping("/system")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
-    @GetMapping("getList")
+    @GetMapping("/getList")
     public List<Book> getList(){
         return bookService.serviceGetList();
     }
 
-    @RequestMapping("addBook")
+    @RequestMapping("/addBook")
     public boolean addBook(@RequestBody Book book){
         //   参数检验
         if(!bookService.check(book)) return false;
@@ -36,7 +36,7 @@ public class BookController {
         return true;
     }
 
-    @RequestMapping("getPageList")
+    @RequestMapping("/getPageList")
     public PageResponse getPageList(PageRequest pageRequest){
 
         if(pageRequest==null) return null;
@@ -46,12 +46,12 @@ public class BookController {
         return result;
     }
 
-    @RequestMapping("queryById")
+    @RequestMapping("/queryById")
     public Book queryById(Integer id){
         return bookService.serviceQueryById(id);
     }
 
-    @RequestMapping("updateById")
+    @RequestMapping("/updateById")
     public String updateById(Book book){
         if(book==null){
             return "数据更新失败";
@@ -61,7 +61,7 @@ public class BookController {
         else return "数据更新失败";
     }
 
-    @RequestMapping("deleteById")
+    @RequestMapping("/deleteById")
     public String deleteById(Integer id){
         if(id==null) return "参数不合法";
 
@@ -70,7 +70,7 @@ public class BookController {
         else return "删除失败!";
     }
 
-    @RequestMapping("batchDeleteById")
+    @RequestMapping("/batchDeleteById")
     public String batchDelete(@RequestParam List<Integer> list){
         if(list==null || list.size()==0) return "参数不合法";
 

@@ -18,6 +18,6 @@ public class Book {
     private Integer status;
     private String statusCN;
     private Date createTime;
-    private Date deleteTime;
+    private Date updateTime;
 
 }

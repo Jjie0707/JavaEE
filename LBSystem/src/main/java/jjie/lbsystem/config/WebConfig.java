@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -17,13 +18,17 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(myInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        // 登录页面
-                        "/login.html",
+
+                        "/favicon",
+                        "/favicon.ico",
                         // 登录请求
                         "/user/login",
 
                         // 允许未登录先打开的页面
+                        "/book_add.html",
+                        "/login.html",
                         "/book_list.html",
+                        "/book_update.html",
 
                         // 静态资源
                         "/css/**",
