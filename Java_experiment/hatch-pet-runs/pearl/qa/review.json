@@ -1,0 +1,962 @@
+{
+  "ok": true,
+  "frames_root": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames",
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "idle",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12559,
+          "bbox": [
+            53,
+            5,
+            139,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 61
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12277,
+          "bbox": [
+            54,
+            5,
+            138,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 63
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12557,
+          "bbox": [
+            52,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 72
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12571,
+          "bbox": [
+            52,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 62
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12534,
+          "bbox": [
+            52,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 67
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/idle/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12536,
+          "bbox": [
+            53,
+            5,
+            139,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 64
+        }
+      ]
+    },
+    {
+      "state": "running-right",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15153,
+          "bbox": [
+            38,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 146
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15079,
+          "bbox": [
+            37,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 153
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15063,
+          "bbox": [
+            36,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 148
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14953,
+          "bbox": [
+            39,
+            5,
+            153,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 164
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15291,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 136
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14963,
+          "bbox": [
+            37,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 158
+        },
+        {
+          "index": 6,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15038,
+          "bbox": [
+            37,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 135
+        },
+        {
+          "index": 7,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-right/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15330,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 172
+        }
+      ]
+    },
+    {
+      "state": "running-left",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15153,
+          "bbox": [
+            38,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 146
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15079,
+          "bbox": [
+            37,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 153
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15063,
+          "bbox": [
+            36,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 148
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14953,
+          "bbox": [
+            39,
+            5,
+            153,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 164
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15291,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 136
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15103,
+          "bbox": [
+            34,
+            5,
+            158,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 157
+        },
+        {
+          "index": 6,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14912,
+          "bbox": [
+            38,
+            5,
+            153,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 132
+        },
+        {
+          "index": 7,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running-left/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15200,
+          "bbox": [
+            39,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 150
+        }
+      ]
+    },
+    {
+      "state": "waving",
+      "expected_frames": 4,
+      "actual_frames": 4,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waving/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12488,
+          "bbox": [
+            53,
+            5,
+            138,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 58
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waving/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12945,
+          "bbox": [
+            46,
+            5,
+            146,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 48
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waving/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12866,
+          "bbox": [
+            47,
+            5,
+            144,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 57
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waving/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12386,
+          "bbox": [
+            54,
+            5,
+            138,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 48
+        }
+      ]
+    },
+    {
+      "state": "jumping",
+      "expected_frames": 5,
+      "actual_frames": 5,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/jumping/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 18301,
+          "bbox": [
+            28,
+            5,
+            163,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 151
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/jumping/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17231,
+          "bbox": [
+            30,
+            5,
+            162,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 192
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/jumping/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 18231,
+          "bbox": [
+            25,
+            5,
+            167,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 168
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/jumping/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17348,
+          "bbox": [
+            29,
+            5,
+            163,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 166
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/jumping/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17405,
+          "bbox": [
+            31,
+            5,
+            161,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 124
+        }
+      ]
+    },
+    {
+      "state": "failed",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13267,
+          "bbox": [
+            50,
+            5,
+            141,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 64
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13177,
+          "bbox": [
+            49,
+            5,
+            143,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 85
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13522,
+          "bbox": [
+            47,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 85
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15709,
+          "bbox": [
+            40,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 136
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13542,
+          "bbox": [
+            47,
+            5,
+            144,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 91
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13364,
+          "bbox": [
+            48,
+            5,
+            144,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 79
+        },
+        {
+          "index": 6,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13117,
+          "bbox": [
+            49,
+            5,
+            143,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 77
+        },
+        {
+          "index": 7,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/failed/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12652,
+          "bbox": [
+            52,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 66
+        }
+      ]
+    },
+    {
+      "state": "waiting",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12547,
+          "bbox": [
+            51,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 71
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12404,
+          "bbox": [
+            51,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 91
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12407,
+          "bbox": [
+            52,
+            5,
+            139,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 89
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12700,
+          "bbox": [
+            52,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 71
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12123,
+          "bbox": [
+            54,
+            5,
+            138,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 98
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/waiting/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12742,
+          "bbox": [
+            49,
+            5,
+            142,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 75
+        }
+      ]
+    },
+    {
+      "state": "running",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13324,
+          "bbox": [
+            47,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 76
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13478,
+          "bbox": [
+            46,
+            5,
+            146,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 75
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13274,
+          "bbox": [
+            47,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 81
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13217,
+          "bbox": [
+            47,
+            5,
+            144,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 85
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13435,
+          "bbox": [
+            47,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 75
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/running/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13942,
+          "bbox": [
+            45,
+            5,
+            147,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 93
+        }
+      ]
+    },
+    {
+      "state": "review",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12368,
+          "bbox": [
+            51,
+            5,
+            141,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 55
+        },
+        {
+          "index": 1,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12792,
+          "bbox": [
+            50,
+            5,
+            141,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 84
+        },
+        {
+          "index": 2,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12779,
+          "bbox": [
+            50,
+            5,
+            142,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 69
+        },
+        {
+          "index": 3,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12695,
+          "bbox": [
+            51,
+            5,
+            141,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 61
+        },
+        {
+          "index": 4,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12820,
+          "bbox": [
+            50,
+            5,
+            141,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 84
+        },
+        {
+          "index": 5,
+          "file": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/frames/review/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12565,
+          "bbox": [
+            51,
+            5,
+            140,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 51
+        }
+      ]
+    }
+  ]
+}

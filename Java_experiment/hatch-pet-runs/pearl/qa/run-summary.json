@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "run_dir": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl",
+  "spritesheet": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/final/spritesheet.webp",
+  "validation": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/final/validation.json",
+  "contact_sheet": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/qa/contact-sheet.png",
+  "review": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl/qa/review.json",
+  "package": "/Users/ouyangjunjie/.codex/pets/pearl"
+}

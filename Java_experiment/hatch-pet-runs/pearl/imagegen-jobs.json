@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-07-02T10:32:45.663574+00:00",
+  "run_dir": "/Users/ouyangjunjie/Desktop/GitHub/JavaEE/Java_experiment/hatch-pet-runs/pearl",
+  "primary_generation_skill": "$imagegen",
+  "jobs": [
+    {
+      "id": "base",
+      "kind": "base-pet",
+      "status": "complete",
+      "prompt_file": "prompts/base-pet.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        }
+      ],
+      "output_path": "decoded/base.png",
+      "depends_on": [],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_0a8888fe81427b22016a463e6c9afc8191a942b1ae356419a9.png",
+      "completed_at": "2026-07-02T10:35:07Z"
+    },
+    {
+      "id": "idle",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/idle.md",
+      "retry_prompt_file": "prompts/row-retries/idle.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/idle.png",
+          "role": "layout guide for 6 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/idle.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "no deterministic derivation is configured for this state"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_0cfb0e22225b5a0c016a463f101dac8191b83219fdb4c2dd9a.png",
+      "completed_at": "2026-07-02T10:38:18Z"
+    },
+    {
+      "id": "running-right",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/running-right.md",
+      "retry_prompt_file": "prompts/row-retries/running-right.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/running-right.png",
+          "role": "layout guide for 8 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/running-right.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "no deterministic derivation is configured for this state"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_0cfb0e22225b5a0c016a463f4ceb048191b7da5d92329b2c5c.png",
+      "completed_at": "2026-07-02T10:38:18Z"
+    },
+    {
+      "id": "running-left",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/running-left.md",
+      "retry_prompt_file": "prompts/row-retries/running-left.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/running-left.png",
+          "role": "layout guide for 8 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        },
+        {
+          "path": "decoded/running-right.png",
+          "role": "rightward gait reference for leftward row decision"
+        }
+      ],
+      "output_path": "decoded/running-left.png",
+      "depends_on": [
+        "base",
+        "running-right"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base",
+        "running-right"
+      ],
+      "derivation_policy": {
+        "may_derive": true,
+        "may_derive_from": "running-right",
+        "derivation": "framewise-horizontal-mirror-preserving-order",
+        "requires_explicit_approval": true,
+        "fallback_generation_skill": "$imagegen"
+      },
+      "mirror_policy": {
+        "may_derive": true,
+        "may_derive_from": "running-right",
+        "derivation": "framewise-horizontal-mirror-preserving-order",
+        "requires_explicit_approval": true,
+        "fallback_generation_skill": "$imagegen"
+      },
+      "source_path": "decoded/running-right.png",
+      "derived_from": "running-right",
+      "completed_at": "2026-07-02T10:38:35.692475+00:00",
+      "metadata": {
+        "width": 2045,
+        "height": 769,
+        "mode": "RGBA",
+        "format": "PNG"
+      },
+      "mirror_decision": {
+        "approved": true,
+        "approved_at": "2026-07-02T10:38:35.692475+00:00",
+        "note": "Pearl has no readable text, one-sided logo, asymmetric prop, or side-specific identity cue; the pearl pendant and white outfit remain meaningful when mirrored, so framewise mirroring preserves identity and cadence.",
+        "transform": "framewise-horizontal-mirror-preserving-order"
+      }
+    },
+    {
+      "id": "waving",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/waving.md",
+      "retry_prompt_file": "prompts/row-retries/waving.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/waving.png",
+          "role": "layout guide for 4 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/waving.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_03d848bd95a0aedc016a46402e0a28819181f818e0ed3b5b52.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    },
+    {
+      "id": "jumping",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/jumping.md",
+      "retry_prompt_file": "prompts/row-retries/jumping.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/jumping.png",
+          "role": "layout guide for 5 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/jumping.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_03d848bd95a0aedc016a464065aeb08191b508970f68f15fee.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    },
+    {
+      "id": "failed",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/failed.md",
+      "retry_prompt_file": "prompts/row-retries/failed.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/failed.png",
+          "role": "layout guide for 8 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/failed.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_03d848bd95a0aedc016a4640d836a48191b5fce1bf880b6f57.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    },
+    {
+      "id": "waiting",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/waiting.md",
+      "retry_prompt_file": "prompts/row-retries/waiting.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/waiting.png",
+          "role": "layout guide for 6 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/waiting.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_03d848bd95a0aedc016a464109b944819198bc626c5e4ff1dd.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    },
+    {
+      "id": "running",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/running.md",
+      "retry_prompt_file": "prompts/row-retries/running.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/running.png",
+          "role": "layout guide for 6 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/running.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_0d7183ba49d2765b016a4641d2e9dc81918aa12e5d7a08ba81.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    },
+    {
+      "id": "review",
+      "kind": "row-strip",
+      "status": "complete",
+      "prompt_file": "prompts/rows/review.md",
+      "retry_prompt_file": "prompts/row-retries/review.md",
+      "input_images": [
+        {
+          "path": "references/reference-01.jpg",
+          "role": "pet reference"
+        },
+        {
+          "path": "references/layout-guides/review.png",
+          "role": "layout guide for 6 frame slots; use for spacing only, do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/review.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "reason": "state requires its own generated animation semantics"
+      },
+      "mirror_policy": {},
+      "source_path": "/Users/ouyangjunjie/.codex/generated_images/019f2260-e686-7aa2-882c-dc2ddaf0e7ce/ig_03d848bd95a0aedc016a464176b37081919949e47a9e5b9e0a.png",
+      "completed_at": "2026-07-02T10:51:33Z"
+    }
+  ]
+}
