@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客详情页</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/detail.css">
+
+</head>
+
+<body>
+    <div class="nav">
+        <img src="pic/logo2.jpg" alt="">
+        <span class="blog-title">blog</span>
+        <div class="space"></div>
+        <a class="nav-span" href="blog_list.html">主页</a>
+        <a class="nav-span" href="blog_edit.html">写博客</a>
+        <a class="nav-span" href="#" onclick="logout()">注销</a>
+    </div>
+
+    <div class="container">
+        <div class="left">
+        </div>
+        <div class="right">
+            <div class="content">
+                <div class="title"></div>
+                <div class="date"></div>
+                <div class="detail"></div>
+                <div class="operating">
+                    <button onclick="window.location.href='blog_update.html'">编辑</button>
+                    <button onclick="deleteBlog()">删除</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        getBlogDetail();
+        getAuthor();
+
+        function getBlogDetail() {
+            var blogId = getQueryString("id");
+            if (!blogId) {
+                alert("缺少博客 id");
+                // return;
+            }
+
+            $.ajax({
+                url: "/blog/getdetail",
+                type: "get",
+                data: {
+                    id: blogId
+                },
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "用户未登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    if (result.code !== 200 || result.data == null) {
+                        alert(result.errorMsg || "获取博客详情失败");
+                        return;
+                    }
+
+                    var blog = result.data || {};
+                    $(".title").text(blog.title || "");
+                    $(".date").text(blog.updateTime || "");
+                    $(".detail").html(formatContent(blog.content));
+                }
+            });
+        }
+
+        function getAuthor() {
+            var blogId = getQueryString("id");
+            // if (!blogId) {
+            //     return;
+            // }
+
+            $.ajax({
+                url: "/user/getauthor",
+                type: "get",
+                data: {
+                    id: blogId
+                },
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "用户未登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    if (!result || result.code !== 200 || !result.data) {
+                        alert((result && result.errorMsg) || "获取作者信息失败");
+                        return;
+                    }
+
+                    var author = result.data;
+                    var cardHtml = '<div class="card">'
+                            + '<img src="pic/user-avatar.webp" alt="用户头像">'
+                            + '<h3>' + escapeHtml(author.userName || "未设置用户名") + '</h3>'
+                            + '<a id="author-github-link" href="#">GitHub 地址</a>'
+                            + '</div>';
+
+                    $(".left").html(cardHtml);
+
+                    if (author.githubUrl) {
+                        $("#author-github-link").attr({
+                            href: author.githubUrl,
+                            target: "_blank",
+                            rel: "noopener noreferrer"
+                        });
+                    }
+                },
+                error: function() {
+                    alert("获取作者信息失败");
+                }
+            });
+        }
+
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substring(1).match(reg);
+            if (r != null) {
+                return decodeURIComponent(r[2]);
+            }
+            return null;
+        }
+
+        function formatContent(content) {
+            if (!content) {
+                return "";
+            }
+            var parts = content.split(/\n+/);
+            var html = "";
+            for (var i = 0; i < parts.length; i++) {
+                var text = $.trim(parts[i]);
+                if (text) {
+                    html += "<p>" + escapeHtml(text) + "</p>";
+                }
+            }
+            return html;
+        }
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function deleteBlog(id) {
+            alert("删除博客");
+        }
+    </script>
+</body>
+
+</html>

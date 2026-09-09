@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客列表页</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/list.css">
+
+</head>
+<body>
+    <div class="nav">
+        <img src="pic/logo2.jpg" alt="">
+        <span class="blog-title">blog</span>
+        <div class="space"></div>
+        <a class="nav-span" href="blog_list.html">主页</a>
+        <a class="nav-span" href="blog_edit.html">写博客</a>
+        <a class="nav-span" href="#" onclick="logout()">注销</a>
+    </div>
+
+    <div class="container">
+        <div class="left">
+        </div>
+        <div class="right">
+
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        getUserInfo();
+        getBlogList();
+
+        function getUserInfo() {
+            var userId = localStorage.getItem("id");
+
+            if (!userId) {
+                alert("登录信息已失效，请重新登录");
+                location.assign("blog_login.html");
+                return;
+            }
+
+            $.ajax({
+                url: "/user/getuserinfo",
+                type: "get",
+                data: {
+                    id: userId
+                },
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "用户未登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    if (!result || result.code !== 200 || !result.data) {
+                        alert((result && result.errorMsg) || "获取用户信息失败");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    var userInfo = result.data;
+                    var cardHtml = '<div class="card">'
+                            + '<img src="pic/user-avatar.webp" alt="用户头像">'
+                            + '<h3>' + escapeHtml(userInfo.userName) + '</h3>'
+                            + '<a id="github-link" href="#">GitHub 地址</a>'
+                            + '<div class="row article-row"><span>文章</span></div>'
+                            + '<div class="row article-row"><span id="blog-count">0</span></div>'
+                            + '</div>';
+
+                    $(".left").html(cardHtml);
+                    getBlogCount();
+
+                    if (userInfo.githubUrl) {
+                        $("#github-link").attr({
+                            href: userInfo.githubUrl,
+                            target: "_blank",
+                            rel: "noopener noreferrer"
+                        });
+                    }
+                },
+                error: function() {
+                    alert("获取用户信息失败");
+                }
+            });
+        }
+
+        function getBlogCount() {
+            $.ajax({
+                url: "/blog/getcount",
+                type: "get",
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "用户未登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    if (result && result.code === 200 && result.data != null) {
+                        $("#blog-count").text(result.data);
+                    }
+                }
+            });
+        }
+
+        function escapeHtml(value) {
+            return $("<div></div>").text(value || "未设置用户名").html();
+        }
+
+        function getBlogList() {
+            $.ajax({
+                url: "/blog/getlist",
+                type: "get",
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "用户未登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+
+                    if (result.code != 200 || result.data==null) {
+                        alert(result.errorMsg || "获取博客列表失败");
+                        return;
+                    }
+
+                    var blogList = result.data || [];
+                    var rightDiv = $(".right");
+                    rightDiv.empty();
+
+                    for (var i = 0; i < blogList.length; i++) {
+                        var blog = blogList[i];
+                        var blogDiv = $("<div class='blog'></div>");
+                        var titleDiv = $("<div class='title'></div>").text(blog.title || "");
+                        var dateDiv = $("<div class='date'></div>").text(blog.updateTime || "");
+                        var descDiv = $("<div class='desc'></div>").text(getBlogDesc(blog.content));
+                        var detailA = $("<a class='detail'>查看全文&gt;&gt;</a>").attr("href", "blog_detail.html?id=" + blog.id);
+
+                        blogDiv.append(titleDiv);
+                        blogDiv.append(dateDiv);
+                        blogDiv.append(descDiv);
+                        blogDiv.append(detailA);
+                        rightDiv.append(blogDiv);
+                    }
+                }
+            });
+        }
+
+        function getBlogDesc(content) {
+            if (!content) {
+                return "";
+            }
+            if (content.length > 100) {
+                return content.substring(0, 100) + "...";
+            }
+            return content;
+        }
+    </script>
+</body>
+</html>
