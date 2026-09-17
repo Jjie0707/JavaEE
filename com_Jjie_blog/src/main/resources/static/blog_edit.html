@@ -19,13 +19,13 @@
         <span class="blog-title">blog</span>
         <div class="space"></div>
         <a class="nav-span" href="blog_list.html">主页</a>
-        <a class="nav-span" href="blog_edit.html">写博客</a>
+        <!-- <a class="nav-span" href="blog_edit.html">写博客</a> -->
         <a class="nav-span" href="#" onclick="logout()">注销</a>
     </div>
     <div class="content-edit">
         <div class="push">
-            <input type="text" name="" id="title">
-            <input type="button" value="发布文章" id="submit" onclick="submit()">
+            <input type="text" name="" id="title" placeholder="请输入博客标题">
+            <input type="button" value="发布文章" id="submit" onclick="saveBlog()">
         </div>
         <!-- markdown 插件 html代码 -->
         <div id="editor">
@@ -38,16 +38,59 @@
     <script src="js/common.js"></script>
     <script type="text/javascript">
 
+        var blogId = new URLSearchParams(location.search).get("id");
         $(function () {
-            var editor = editormd("editor", {
+            editor = editormd("editor", {
                 width: "100%",
                 height: "550px",
                 path: "blog-editormd/lib/"
             });
+            if (blogId) {
+                $("#submit").val("更新文章");
+                $.get("/blog/getdetail", {id: blogId}, function(result) {
+                    var blog = result && result.data ? result.data : result;
+                    if (!blog || !blog.id) { alert("获取博客失败"); return; }
+                    $("#title").val(blog.title || "");
+                    editor.setMarkdown(blog.content || "");
+                });
+            }
         });
 
-        function submit() {
-            alert("发表博客");
+        var editor;
+        function saveBlog() {
+            var userId = localStorage.getItem("id");
+            var token = localStorage.getItem("token");
+            var title = $.trim($("#title").val());
+            var content = editor ? editor.getMarkdown().trim() : "";
+            if (!userId || !token) {
+                alert("请先登录");
+                location.assign("blog_login.html");
+                return;
+            }
+            if (!title || !content) {
+                alert("标题和正文不能为空");
+                return;
+            }
+            var button = $("#submit");
+            button.prop("disabled", true).val(blogId ? "更新中..." : "发布中...");
+            $.ajax({
+                url: blogId ? "/blog/edit?id=" + encodeURIComponent(blogId) : "/blog/publish",
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({ userId: Number(userId), title: title, content: content }),
+                success: function(result) {
+                    if (result === true || (result && result.code === 200)) {
+                        alert(blogId ? "更新成功" : "发布成功");
+                        location.assign("blog_list.html");
+                    } else {
+                        alert((result && result.errorMsg) || "发布失败");
+                    }
+                },
+                error: function(xhr) {
+                    alert("发布失败：" + (xhr.responseJSON && xhr.responseJSON.errorMsg || "请检查登录状态"));
+                },
+                complete: function() { button.prop("disabled", false).val(blogId ? "更新文章" : "发布文章"); }
+            });
         }
     </script>
 </body>

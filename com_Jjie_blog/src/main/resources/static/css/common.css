@@ -40,6 +40,7 @@ html,body{
     width: 80px;
     text-decoration: none;
     color: white;
+    cursor: pointer;
 }
 .container{
     /* border: 1px solid red; */

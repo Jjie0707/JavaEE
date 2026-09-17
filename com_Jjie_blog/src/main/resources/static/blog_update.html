@@ -25,12 +25,12 @@
     <div class="content-edit">
         <div class="push">
             <input type="hidden" id="blogId">
-            <input type="text" name="" id="title">
-            <input type="button" value="更新文章" id="submit" onclick="submit()">
+            <input type="text" id="title" placeholder="请输入博客标题">
+            <input type="button" value="加载中..." id="submit" onclick="updateBlog()" disabled>
         </div>
         <!-- markdown 插件 html代码 -->
         <div id="editor">
-            <textarea style="display:none;" id="content">##在这里写下一篇博客</textarea>
+            <textarea style="display:none;" id="content"></textarea>
         </div>
     </div>
 
@@ -39,25 +39,89 @@
     <script src="js/common.js"></script>
     <script type="text/javascript">
 
+        var editor;
+        var ready = false;
+        var blogId = new URLSearchParams(location.search).get("id");
+
         $(function () {
-            var editor = editormd("editor", {
-                width  : "100%",
-                height : "550px",
-                path: "blog-editormd/lib/"
-                // onload: function () {
-                //     this.watch();
-                //     this.setMarkdown(content);
-                // }
+            if (!blogId || !/^[1-9]\d*$/.test(blogId)) {
+                alert("缺少有效的博客 ID，请从详情页点击编辑");
+                return;
+            }
+            $("#blogId").val(blogId);
+            $.ajax({
+                url: "/blog/getdetail",
+                type: "GET",
+                data: {id: blogId},
+                success: function(result) {
+                    if (checkLogin(result)) return;
+                    if (!result || result.code !== 200 || !result.data) {
+                        alert((result && result.errorMsg) || "获取博客失败，请刷新重试");
+                        return;
+                    }
+                    var blog = result.data;
+                    $("#title").val(blog.title || "");
+                    // 先取得原文，再初始化编辑器，避免依赖未加载就调用 setMarkdown。
+                    editor = editormd("editor", {
+                        width: "100%",
+                        height: "550px",
+                        path: "blog-editormd/lib/",
+                        markdown: blog.content || "",
+                        onload: function() {
+                            ready = true;
+                            $("#submit").prop("disabled", false).val("更新文章");
+                        }
+                    });
+                },
+                error: function() {
+                    alert("获取博客失败，请检查网络后刷新重试");
+                }
             });
         });
-        
-        function submit() {
-           
+
+        function checkLogin(result) {
+            if (result && result.code === -1) {
+                alert(result.errorMsg || "登录已失效，请重新登录");
+                location.assign("blog_login.html");
+                return true;
+            }
+            return false;
         }
-        function getBlogInfo() {
-            
+
+        function updateBlog() {
+            var button = $("#submit");
+            if (!ready || button.prop("disabled")) return;
+            var userId = Number(localStorage.getItem("id"));
+            var title = $.trim($("#title").val());
+            var content = editor.getMarkdown();
+            if (!userId || !localStorage.getItem("token")) {
+                alert("请先登录");
+                location.assign("blog_login.html");
+                return;
+            }
+            if (!title || !content.trim()) {
+                alert("标题和正文不能为空");
+                return;
+            }
+            button.prop("disabled", true).val("更新中...");
+            $.ajax({
+                url: "/blog/edit?id=" + encodeURIComponent(blogId),
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({userId: userId, title: title, content: content}),
+                success: function(result) {
+                    if (checkLogin(result)) return;
+                    if (result && result.code === 200 && result.data === true) {
+                        alert("更新成功");
+                        location.assign("blog_detail.html?id=" + encodeURIComponent(blogId));
+                    } else {
+                        alert((result && result.errorMsg) || "更新失败，请重试");
+                    }
+                },
+                error: function() { alert("更新失败，请检查网络后重试"); },
+                complete: function() { button.prop("disabled", false).val("更新文章"); }
+            });
         }
-        getBlogInfo();
     </script>
 </body>
 

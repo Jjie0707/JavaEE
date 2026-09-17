@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/detail.css">
+    <link rel="stylesheet" href="blog-editormd/css/editormd.preview.css">
 
 </head>
 
@@ -30,10 +31,10 @@
             <div class="content">
                 <div class="title"></div>
                 <div class="date"></div>
-                <div class="detail"></div>
-                <div class="operating">
-                    <button onclick="window.location.href='blog_update.html'">编辑</button>
-                    <button onclick="deleteBlog()">删除</button>
+                <div id="detail" class="detail editormd-preview-theme"></div>
+                <div class="operating" style="display:none;">
+                    <button id="edit-button">编辑</button>
+                    <button id="delete-button" onclick="deleteBlog()">删除</button>
                 </div>
             </div>
 
@@ -41,6 +42,14 @@
     </div>
 
     <script src="js/jquery.min.js"></script>
+    <script src="blog-editormd/lib/marked.min.js"></script>
+    <script src="blog-editormd/lib/prettify.min.js"></script>
+    <script src="blog-editormd/lib/raphael.min.js"></script>
+    <script src="blog-editormd/lib/underscore.min.js"></script>
+    <script src="blog-editormd/lib/sequence-diagram.min.js"></script>
+    <script src="blog-editormd/lib/flowchart.min.js"></script>
+    <script src="blog-editormd/lib/jquery.flowchart.min.js"></script>
+    <script src="blog-editormd/editormd.min.js"></script>
     <script src="js/common.js"></script>
     <script>
         getBlogDetail();
@@ -74,7 +83,23 @@
                     var blog = result.data || {};
                     $(".title").text(blog.title || "");
                     $(".date").text(blog.updateTime || "");
-                    $(".detail").html(formatContent(blog.content));
+                    // Editormd 将 Markdown 转成 HTML，并处理标题、代码、列表等语法。
+                    editormd.markdownToHTML("detail", {
+                        markdown: blog.content || "",
+                        htmlDecode: "style,script,iframe",
+                        taskList: true,
+                        tex: true,
+                        flowChart: true,
+                        sequenceDiagram: true
+                    });
+                    // 登录接口已将当前用户 ID 保存到 localStorage。只有作者本人可操作。
+                    var currentUserId = Number(localStorage.getItem("id"));
+                    if (currentUserId && currentUserId === Number(blog.userId)) {
+                        $(".operating").show();
+                        $("#edit-button").on("click", function() {
+                            window.location.href = "blog_update.html?id=" + encodeURIComponent(blog.id);
+                        });
+                    }
                 }
             });
         }
@@ -159,8 +184,51 @@
                 .replace(/'/g, "&#39;");
         }
 
-        function deleteBlog(id) {
-            alert("删除博客");
+        function deleteBlog() {
+            var blogId = getQueryString("id");
+            if (!blogId) {
+                alert("缺少博客 id");
+                return;
+            }
+            if (!window.confirm("确定要删除这篇博客吗？删除后无法恢复。")) {
+                return;
+            }
+            $("#delete-button").prop("disabled", true).text("删除中...");
+            requestDelete(blogId, "POST");
+        }
+
+        function requestDelete(blogId, httpMethod) {
+            $.ajax({
+                url: "/blog/delete",
+                type: httpMethod,
+                data: {
+                    id: blogId
+                },
+                success: function(result) {
+                    if (result && result.code === -1) {
+                        alert(result.errorMsg || "登录已失效，请重新登录");
+                        window.location.href = "blog_login.html";
+                        return;
+                    }
+                    if (result && result.code === 200 && result.data === true) {
+                        alert("删除成功");
+                        window.location.href = "blog_list.html";
+                    } else {
+                        alert((result && result.errorMsg) || "删除失败，请重试");
+                        $("#delete-button").prop("disabled", false).text("删除");
+                    }
+                },
+                error: function(xhr) {
+                    // 后端若只接受 GET，POST 会返回 405，这里自动再用 GET 请求一次。
+                    if (httpMethod === "POST" && xhr.status === 405) {
+                        requestDelete(blogId, "GET");
+                        return;
+                    }
+                    var message = xhr.responseJSON && xhr.responseJSON.errorMsg;
+                    alert(message || "删除失败，请检查登录状态");
+                    $("#delete-button").prop("disabled", false).text("删除");
+                }
+            });
         }
     </script>
 </body>

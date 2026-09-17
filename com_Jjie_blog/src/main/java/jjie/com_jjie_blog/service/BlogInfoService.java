@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jjie.com_jjie_blog.common.utils.ObjectTrans;
 import jjie.com_jjie_blog.entity.BlogInfo;
 import jjie.com_jjie_blog.entity.BlogInfoResponse;
+import jjie.com_jjie_blog.entity.BlogRequest;
 import jjie.com_jjie_blog.mapper.BlogInfoMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,28 @@ public class BlogInfoService {
         return count;
     }
 
+    public Boolean publish(BlogRequest blogrequest) {
+        BlogInfo blogInfo=new BlogInfo();
+        ObjectTrans.blogTrans(blogrequest,blogInfo);
+        int ret=blogInfoMapper.insert(blogInfo);
+        return ret==1;
+    }
+
+    public Boolean edit(BlogRequest blogRequest,Integer id) {
+        BlogInfo blogInfo=new BlogInfo();
+        ObjectTrans.blogTrans(blogRequest,blogInfo);
+        blogInfo.setId(id);
+        int ret=blogInfoMapper.updateById(blogInfo);
+        return ret==1;
+    }
+
+    public Boolean delete(Integer id) {
+        BlogInfo blogInfo=blogInfoMapper.selectOne(new LambdaQueryWrapper<BlogInfo>()
+                .eq(BlogInfo::getId,id)
+                .eq(BlogInfo::getDeleteFlag,0));
+        if(blogInfo==null) return false;
+        blogInfo.setDeleteFlag(1);
+        blogInfoMapper.updateById(blogInfo);
+        return true;
+    }
 }
