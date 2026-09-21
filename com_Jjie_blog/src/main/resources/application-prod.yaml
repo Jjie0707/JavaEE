@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: com_Jjie_blog
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/java_blog_spring?characterEncoding=utf8&useSSL=false
+    username: root
+    password: Oyjjdsb20060822.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  file:
+    name: logs/com_Jjie_blog.log
+  level:
+    root: INFO
+    com.Jjie: DEBUG
+    com.Jjie.blog.mapper: DEBUG
