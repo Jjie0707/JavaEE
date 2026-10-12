@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: MsgQueue
+  datasource:
+    url: jdbc:sqlite:./data/msgqueue.db
+    driver-class-name: org.sqlite.JDBC
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: jjie.msgqueue
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
