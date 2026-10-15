@@ -2,9 +2,10 @@ package jjie.msgqueue.server.core;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.UUID;
 @Data
-public class BasicProperties {
+public class BasicProperties implements Serializable {
     //自动生成以‘M-’开头的唯一id
     private String id= "M-"+UUID.randomUUID();
     private String routingKey;

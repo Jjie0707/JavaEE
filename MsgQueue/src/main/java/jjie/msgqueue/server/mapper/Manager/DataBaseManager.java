@@ -1,4 +1,4 @@
-package jjie.msgqueue.server.mapper;
+package jjie.msgqueue.server.mapper.Manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jjie.msgqueue.MsgQueueApplication;
@@ -6,11 +6,15 @@ import jjie.msgqueue.server.core.Binding;
 import jjie.msgqueue.server.core.Exchange;
 import jjie.msgqueue.server.core.ExchangeType;
 import jjie.msgqueue.server.core.MsgQueue;
+import jjie.msgqueue.server.mapper.BindingMapper;
+import jjie.msgqueue.server.mapper.ExchangeMapper;
+import jjie.msgqueue.server.mapper.MetaMapper;
+import jjie.msgqueue.server.mapper.MsgQueueMapper;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-public class DataManager {
+public class DataBaseManager {
     private ApplicationContext context= MsgQueueApplication.context;
 
     private MetaMapper metaMapper=context.getBean(MetaMapper.class);
