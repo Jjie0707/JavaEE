@@ -2,7 +2,7 @@ spring:
   application:
     name: com_Jjie_blog
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/java_blog_spring?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/java_blog_spring?characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: oyjj0822
     driver-class-name: com.mysql.cj.jdbc.Driver

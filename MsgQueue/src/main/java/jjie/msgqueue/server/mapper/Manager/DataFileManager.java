@@ -21,7 +21,7 @@ public class DataFileManager {
     }
     //获取各文件名的方法
     public String getQueueDir(String queueName){
-        return "./data/"+queueName;
+        return "./data"+queueName;
     }
     public String getQueueDataPath(String queueName){
         return getQueueDir(queueName)+"/data.txt";
@@ -107,7 +107,7 @@ public class DataFileManager {
             //追加写写到文件尾
             try(OutputStream outputStream=new FileOutputStream(queueDataFile,true)){
                 try(DataOutputStream dataOutputStream=new DataOutputStream(outputStream)){
-                    dataOutputStream.writeInt(msg.length);
+                    dataOutputStream.writeInt(msg.length);//专门写四个字节的int
                     dataOutputStream.write(msg);
                 }
             }
@@ -136,6 +136,7 @@ public class DataFileManager {
                 msg=BinaryTool.toBinary(tem);
                 randomAccessFile.seek(offsetStart);
                 randomAccessFile.write(msg);
+                //更新sta.txt文件
                 Sta sta=(Sta)readSta(queue.getName());
                 if(sta.validCount>0) sta.validCount--;
                 writeSta(queue.getName(),sta);
@@ -184,7 +185,8 @@ public class DataFileManager {
     }
     //获取临时文件的名字
     public String getNewQueueDataPath(String queueName){
-        return getQueueDir(queueName)+"/data_new.txt";
+        return getQueueDir(queueName)+"/" +
+                "data_new.txt";
     }
     //进行垃圾回收(gc)
     public void gc(MsgQueue queue) throws MqException, IOException, ClassNotFoundException {
