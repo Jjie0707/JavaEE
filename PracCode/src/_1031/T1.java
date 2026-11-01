@@ -30,10 +30,10 @@ public class T1 {
 //            return this.val-o.val;
 //        }
 //    }
-int[][] dirs={
+static int[][] dirs={
         {1,0},{-1,0},{0,1},{0,-1}
 };
-    public int cutOffTree(List<List<Integer>> forest) {
+    static public int cutOffTree(List<List<Integer>> forest) {
 
         int len=forest.size(),width=forest.get(0).size();
         int[][] f=new int[len][width];
@@ -61,7 +61,7 @@ int[][] dirs={
         }
         return ret;
     }
-    public int bfs(int[][] nums,int sr,int sc,int r,int c){
+    static public int bfs(int[][] nums,int sr,int sc,int r,int c){
         if(sr==r && sc==c) return 0;
         int[][] pos=new int[nums.length][nums[0].length];
         LinkedList<int[]> q=new LinkedList<>();
