@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class DataFileManager {
+    public void init() {
+        //null
+    }
+
     public static class Sta{
         public int totalCount;
         public int validCount;
