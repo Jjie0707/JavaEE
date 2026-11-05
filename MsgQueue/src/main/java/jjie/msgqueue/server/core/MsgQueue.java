@@ -1,5 +1,6 @@
 package jjie.msgqueue.server.core;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +15,7 @@ import java.util.Map;
 @TableName("msgqueue")
 public class MsgQueue {
     //作为每个队列唯一的标识
-    @TableId("name")
+    @TableId(value = "name", type = IdType.INPUT)
     private String name;
     //是否为独占队列
     @TableField("exclusive")

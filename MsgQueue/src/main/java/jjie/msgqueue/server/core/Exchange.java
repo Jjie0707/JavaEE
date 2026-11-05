@@ -1,6 +1,7 @@
 package jjie.msgqueue.server.core;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,7 +16,7 @@ import java.util.Map;
 @TableName("exchange")
 public class Exchange {
     //作为每个交换机唯一的标识
-    @TableId("name")
+    @TableId(value = "name", type = IdType.INPUT)
     private String name;
     //每个交换机的类型,默认值是直接交换机(direct)
     @TableField("exchangetype")

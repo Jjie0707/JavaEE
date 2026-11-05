@@ -6,10 +6,20 @@ import jjie.msgqueue.server.core.Message;
 import jjie.msgqueue.server.core.MsgQueue;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataFileManager {
+    private static final int MAX_MSG_BYTES = 64 * 1024 * 1024;
+    private final ConcurrentHashMap<String, Object> queueLocks = new ConcurrentHashMap<>();
+
+    private Object lockOf(String queueName) {
+        return queueLocks.computeIfAbsent(queueName, k -> new Object());
+    }
     public void init() {
         //null
     }
@@ -25,7 +35,7 @@ public class DataFileManager {
     }
     //获取各文件名的方法
     public String getQueueDir(String queueName){
-        return "./data"+queueName;
+        return "./data/"+queueName;
     }
     public String getQueueDataPath(String queueName){
         return getQueueDir(queueName)+"/data.txt";
@@ -36,13 +46,13 @@ public class DataFileManager {
 
     //sta文件写入
     public void writeSta(String queueName,Sta sta) throws IOException {
-        try(OutputStream outputStream = new FileOutputStream(
-                getQueueStaPath(queueName) )
-        ) {
-            PrintWriter printWriter=new PrintWriter(outputStream);
-            printWriter.write(sta.totalCount + "\t" + sta.validCount);
-            printWriter.flush();
+        File tmp = new File(getQueueStaPath(queueName) + ".tmp");
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(tmp))) {
+            pw.write(sta.totalCount + "\t" + sta.validCount);
+            pw.flush();
         }
+        Files.move(tmp.toPath(), Paths.get(getQueueStaPath(queueName)),
+                StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
     }
     //sta文件读取
     public Object readSta(String queueName) throws IOException {
@@ -51,10 +61,10 @@ public class DataFileManager {
                 getQueueStaPath(queueName) )
         ){
             Scanner scanner=new Scanner(inputStream);
-            int tCount=scanner.nextInt();
-            int vCount=scanner.nextInt();
-            sta.totalCount=tCount;
-            sta.validCount=vCount;
+            if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
+            sta.totalCount = scanner.nextInt();
+            if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
+            sta.validCount = scanner.nextInt();
             return sta;
         }
     }
@@ -101,7 +111,7 @@ public class DataFileManager {
         if(!checkFilesExists(queue.getName())){
             throw new MqException("[DataFileManager] 队列对应的文件不存在! queueName=" + queue.getName());
         }
-        synchronized (queue){
+        synchronized (lockOf(queue.getName())) {
             //先序列化这个message
             File queueDataFile=new File(getQueueDataPath(queue.getName()));
             byte[] msg= BinaryTool.toBinary(message);
@@ -123,8 +133,8 @@ public class DataFileManager {
         }
     }
     //删除某一个消息
-    public void deleteMessage(MsgQueue queue,Message message) throws IOException, ClassNotFoundException {
-        synchronized (queue){
+    public void deleteMessage(MsgQueue queue,Message message) throws IOException, ClassNotFoundException, MqException {
+        synchronized (lockOf(queue.getName())) {
             //采取随机读写的方式
             try(RandomAccessFile randomAccessFile=new RandomAccessFile(
                     getQueueDataPath(queue.getName()),"rw")){
@@ -135,8 +145,14 @@ public class DataFileManager {
                 randomAccessFile.read(msg);
                 Message tem= (Message)BinaryTool.from(msg);
 
-                tem.setIsValid((byte)0x0);
+                if (tem.getIsValid() != 0x1) {
+                    return;                      // 已删过, 幂等返回, 不动 sta
+                }
+                if (msg.length != (offsetEnd - offsetStart)) {
+                    throw new MqException("[DataFileManager] 序列化长度变化, 拒绝回写: " + queue.getName());
+                }
 
+                tem.setIsValid((byte) 0x0);
                 msg=BinaryTool.toBinary(tem);
                 randomAccessFile.seek(offsetStart);
                 randomAccessFile.write(msg);
@@ -151,15 +167,30 @@ public class DataFileManager {
     public LinkedList<Message> getAllMessages(String queueName) throws IOException,MqException,ClassNotFoundException {
         LinkedList<Message> ret=new LinkedList<>();
         long index=0;
+        long fileLen = new File(getQueueDataPath(queueName)).length();
         try(InputStream inputStream=new FileInputStream(getQueueDataPath(queueName))){
             try(DataInputStream dataInputStream=new DataInputStream(inputStream)){
                 while (true){
-                    int length=dataInputStream.readInt();
+                    int length;
+                    try {
+                        length = dataInputStream.readInt();            // EOF 在这里 = 正常读完
+                    } catch (EOFException e) {
+                        // 读到的位置必须正好是文件尾, 否则尾部有半截记录
+                        if (index != fileLen) {
+                            throw new MqException("[DataFileManager] 文件尾部残留 "
+                                    + (fileLen - index) + " 字节: " + queueName);
+                        }
+                        System.out.println("[DataFileManager] 加载全部消息完毕!");
+                        break;
+                    }
                     byte[] message=new byte[length];
-                    dataInputStream.readFully(message);int size=message.length;
-                    //message的实际长度和read到的不一致,文件可能损坏
-                    if(length!=size){
-                        throw new MqException("[DataFileManager] :"+"消息文件损坏");
+                    if (length == 0 || length > MAX_MSG_BYTES)
+                        throw new MqException("[DataFileManager] 消息长度非法: " + length + ", queue=" + queueName);
+
+                    try {
+                        dataInputStream.readFully(message);            // EOF 在这里 = 文件损坏
+                    } catch (EOFException e) {
+                        throw new MqException("[DataFileManager] 消息文件损坏, 尾部记录不完整: " + queueName);
                     }
                     //由于是在程序开始时调用 要把offset等属性重新加回内存对象中
                     Message tem=(Message) (BinaryTool.from(message));
@@ -172,8 +203,6 @@ public class DataFileManager {
                     index=index+4+length;
                     ret.addLast(tem);
                 }
-            }catch (EOFException e){
-                System.out.println("[DataFileManager] :加载全部消息完毕!");
             }
             return ret;
         }
@@ -194,7 +223,7 @@ public class DataFileManager {
     }
     //进行垃圾回收(gc)
     public void gc(MsgQueue queue) throws MqException, IOException, ClassNotFoundException {
-        synchronized (queue){
+        synchronized(lockOf(queue.getName())) {
             long startTime=System.currentTimeMillis();
             // 新的data文件
             File newDataFile=new File(getNewQueueDataPath(queue.getName()));

@@ -38,6 +38,7 @@ public class MemoryDataManager {
 
     public void deleteExchange(String exchangeName) {
         exchangeMap.remove(exchangeName);
+        bindingsMap.remove(exchangeName);
         System.out.println("[MemoryDataCenter] 交换机删除成功! exchangeName=" + exchangeName);
     }
 
@@ -52,21 +53,29 @@ public class MemoryDataManager {
 
     public void deleteQueue(String queueName) {
         queueMap.remove(queueName);
+        queueMessageMap.remove(queueName);
+        queueMessageUnAckMap.remove(queueName);
+        // 队列没了, 所有指向它的绑定都得摘掉
+        bindingsMap.values().forEach(m -> m.remove(queueName));
         System.out.println("[MemoryDataCenter] 队列删除成功! queueName=" + queueName);
     }
 
     public void insertBinding(Binding binding) throws MqException {
-        // 先使用 exchangeName 查一下, 对应的哈希表是否存在. 不存在就创建一个.
-        ConcurrentHashMap<String, Binding> bindingMap = bindingsMap.computeIfAbsent(binding.getExchangeName(),
-                k -> new ConcurrentHashMap<>());
-        synchronized (bindingMap) {
-            // 再根据 queueName 查一下. 如果已经存在, 就抛出异常. 不存在才能插入.
-            if (bindingMap.get(binding.getQueueName()) != null) {
-                throw new MqException("[MemoryDataCenter] 绑定已经存在! exchangeName=" + binding.getExchangeName() +
-                        ", queueName=" + binding.getQueueName());
-            }
-            bindingMap.put(binding.getQueueName(), binding);
+        if (exchangeMap.get(binding.getExchangeName()) == null) {
+            throw new MqException("[MemoryDataCenter] 交换机不存在! exchangeName=" + binding.getExchangeName());
         }
+        if (queueMap.get(binding.getQueueName()) == null) {
+            throw new MqException("[MemoryDataCenter] 队列不存在! queueName=" + binding.getQueueName());
+        }
+        // 先使用 exchangeName 查一下, 对应的哈希表是否存在. 不存在就创建一个.
+        ConcurrentHashMap<String, Binding> bindingMap = bindingsMap.computeIfAbsent(
+                binding.getExchangeName(), k -> new ConcurrentHashMap<>());
+        //插入顺便进行校验
+        if (bindingMap.putIfAbsent(binding.getQueueName(), binding) != null) {
+            throw new MqException("[MemoryDataCenter] 绑定已经存在! exchangeName=" + binding.getExchangeName()
+                    + ", queueName=" + binding.getQueueName());
+        }
+
         System.out.println("[MemoryDataCenter] 新绑定添加成功! exchangeName=" + binding.getExchangeName()
                 + ", queueName=" + binding.getQueueName());
     }
@@ -88,12 +97,10 @@ public class MemoryDataManager {
 
     public void deleteBinding(Binding binding) throws MqException {
         ConcurrentHashMap<String, Binding> bindingMap = bindingsMap.get(binding.getExchangeName());
-        if (bindingMap == null) {
-            // 该交换机没有绑定任何队列. 报错.
+        if (bindingMap == null || bindingMap.remove(binding.getQueueName()) == null) {
             throw new MqException("[MemoryDataCenter] 绑定不存在! exchangeName=" + binding.getExchangeName()
                     + ", queueName=" + binding.getQueueName());
         }
-        bindingMap.remove(binding.getQueueName());
         System.out.println("[MemoryDataCenter] 绑定删除成功! exchangeName=" + binding.getExchangeName()
                 + ", queueName=" + binding.getQueueName());
     }
@@ -195,7 +202,7 @@ public class MemoryDataManager {
         queueMap.clear();
         bindingsMap.clear();
         messageMap.clear();
-        queueMessageMap.clear();
+        queueMessageMap.clear();queueMessageUnAckMap.clear();
         // 1. 恢复所有的交换机数据
         List<Exchange> exchanges = diskDataManager.selectAllExchanges();
         for (Exchange exchange : exchanges) {
