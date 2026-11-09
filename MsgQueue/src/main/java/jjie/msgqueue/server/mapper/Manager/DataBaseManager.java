@@ -12,6 +12,7 @@ import jjie.msgqueue.server.mapper.MetaMapper;
 import jjie.msgqueue.server.mapper.MsgQueueMapper;
 import org.springframework.context.ApplicationContext;
 
+import java.io.File;
 import java.util.List;
 
 public class DataBaseManager {
@@ -24,8 +25,20 @@ public class DataBaseManager {
 
 
     public void init(){
-        int ret=metaMapper.init();
-        if(ret==1) createDefaultData();
+        if (!metaMapper.check()) {
+            // 数据库不存在, 就进行建建库表操作
+            // 先创建一个 data 目录
+            File dataDir = new File("./data");
+            dataDir.mkdirs();
+            // 创建数据表
+            metaMapper.createTable();
+            // 插入默认数据
+            createDefaultData();
+            System.out.println("[DataBaseManager] 数据库初始化完成!");
+        } else {
+            // 数据库已经存在了, 啥都不必做即可
+            System.out.println("[DataBaseManager] 数据库已经存在!");
+        }
     }
     public void deleteDB(){
         metaMapper.deleteDB();

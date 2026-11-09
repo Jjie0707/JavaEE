@@ -60,11 +60,12 @@ public class DataFileManager {
         try(InputStream inputStream=new FileInputStream(
                 getQueueStaPath(queueName) )
         ){
-            Scanner scanner=new Scanner(inputStream);
-            if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
-            sta.totalCount = scanner.nextInt();
-            if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
-            sta.validCount = scanner.nextInt();
+            try (Scanner scanner = new Scanner(new FileInputStream(getQueueStaPath(queueName)))) {
+                if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
+                sta.totalCount = scanner.nextInt();
+                if (!scanner.hasNextInt()) throw new IOException("[DataFileManager] sta.txt 损坏: " + queueName);
+                sta.validCount = scanner.nextInt();
+            }
             return sta;
         }
     }

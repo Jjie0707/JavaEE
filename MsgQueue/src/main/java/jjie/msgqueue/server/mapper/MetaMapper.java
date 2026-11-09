@@ -30,7 +30,7 @@ public class MetaMapper {
     }
     public int init(){
         if(!check()) {
-            createTable(dataSource);
+            createTable();
             System.out.println("数据库初始化成功!!");
             return 1;
         }else {
@@ -44,7 +44,7 @@ public class MetaMapper {
         File file=new File(name);
         return file.exists();
     }
-    public void createTable(DataSource dataSource){
+    public void createTable(){
         String createExchangeTable = """
             CREATE TABLE IF NOT EXISTS exchange (
                 name TEXT PRIMARY KEY,
