@@ -36,9 +36,21 @@ public class DiskDataManager {
 
     // 封装队列操作
     public void insertQueue(MsgQueue queue) throws IOException {
-        dataBaseManager.insertQueue(queue);
-        // 创建队列的同时, 不仅仅是把队列对象写到数据库中, 还需要创建出对应的目录和文件
+        // 先记一下文件是不是本来就有: 有就说明是重建同名队列, 回滚时不能动它
+        boolean filesExisted = dataFileManager.checkFilesExists(queue.getName());
         dataFileManager.createQueueFiles(queue.getName());
+        try {
+            dataBaseManager.insertQueue(queue);
+        } catch (RuntimeException e) {
+            if (!filesExisted) {                 // ← 只删自己刚建的
+                try {
+                    dataFileManager.destroyQueueFiles(queue.getName());
+                } catch (IOException ignore) {
+                    // 回滚失败只能记日志, 不能盖住原始异常
+                }
+            }
+            throw e;
+        }
     }
 
     public void deleteQueue(String queueName) throws IOException {
@@ -64,6 +76,13 @@ public class DiskDataManager {
         return dataBaseManager.selectAllBindings();
     }
 
+    public void deleteBindingsByExchange(String exchangeName) {
+        dataBaseManager.deleteBindingsByExchange(exchangeName);
+    }
+
+    public void deleteBindingsByQueue(String queueName) {
+        dataBaseManager.deleteBindingsByQueue(queueName);
+    }
     // 封装消息操作
     public void sendMessage(MsgQueue queue, Message message) throws IOException, MqException {
         dataFileManager.sendMessage(queue, message);

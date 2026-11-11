@@ -40,4 +40,7 @@ public class MsgQueue {
 
         this.arguments = objectMapper.readValue( object, new TypeReference<Map<String,Object>>(){} );
     }
+    public void setArguments(Map<String,Object> arguments){
+        this.arguments=arguments;
+    }
 }

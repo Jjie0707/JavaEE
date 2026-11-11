@@ -7,6 +7,7 @@ import jjie.msgqueue.server.core.Message;
 import jjie.msgqueue.server.core.MsgQueue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -222,12 +223,26 @@ public class MemoryDataManager {
         }
         // 4. 恢复所有的消息数据
         //    遍历所有的队列, 根据每个队列的名字, 获取到所有的消息.
+        //  有一个队列报错时,不摧毁整个恢复程序,只是把恢复失败失败的queue报告出来
+        List<String> brokenQueues = new ArrayList<>();
         for (MsgQueue queue : queues) {
-            LinkedList<Message> messages = diskDataManager.loadAllMessageFromQueue(queue.getName());
-            queueMessageMap.put(queue.getName(), messages);
-            for (Message message : messages) {
-                messageMap.put(message.getBasicProperties().getId(), message);
+            try {
+                LinkedList<Message> messages = diskDataManager.loadAllMessageFromQueue(queue.getName());
+                queueMessageMap.put(queue.getName(), messages);
+                for (Message message : messages) {
+                    messageMap.put(message.getBasicProperties().getId(), message);
+                }
+            } catch (Exception e) {
+                // 队列本身还能用, 只是历史消息读不出来, 先给个空链表
+                queueMessageMap.put(queue.getName(), new LinkedList<>());
+                brokenQueues.add(queue.getName());
+                System.err.println("[MemoryDataManager] 队列恢复失败, 已跳过: "
+                        + queue.getName() + " 原因: " + e);
             }
+        }
+        if (!brokenQueues.isEmpty()) {
+            System.err.println("[MemoryDataManager] 共 " + brokenQueues.size()
+                    + " 个队列恢复失败, 请检查磁盘: " + brokenQueues);
         }
         // 注意!! 针对 "未确认的消息" 这部分内存中的数据, 不需要从硬盘恢复. 之前考虑硬盘存储的时候, 也没设定这一块.
         // 一旦在等待 ack 的过程中, 服务器重启了, 此时这些 "未被确认的消息", 就恢复成 "未被取走的消息" .

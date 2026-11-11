@@ -21,7 +21,7 @@ public class Exchange {
     //每个交换机的类型,默认值是直接交换机(direct)
     @TableField("exchangetype")
     private ExchangeType exchangeType= ExchangeType.DIRECT;
-    //数据是否持久化 0否 1是(未实现)
+    //数据是否持久化 0否 1是
     @TableField("durable")
     private Integer durable=0;
     //是否自动删除交换机(未实现)
@@ -37,7 +37,10 @@ public class Exchange {
 
     public void setArguments(String object) {
         ObjectMapper objectMapper=new ObjectMapper();
-
         this.arguments = objectMapper.readValue( object, new TypeReference<Map<String,Object>>(){} );
     }
+    public void setArguments(Map<String , Object> arguments){
+        this.arguments=arguments;
+    }
+
 }

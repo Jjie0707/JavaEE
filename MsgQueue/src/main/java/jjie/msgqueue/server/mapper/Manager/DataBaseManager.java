@@ -105,4 +105,13 @@ public class DataBaseManager {
                         .eq(Binding::getExchangeName,binding.getExchangeName())
         );
     }
+    public void deleteBindingsByExchange(String exchangeName) {
+        bindingMapper.delete(new LambdaQueryWrapper<Binding>()
+                .eq(Binding::getExchangeName, exchangeName));
+    }
+
+    public void deleteBindingsByQueue(String queueName) {
+        bindingMapper.delete(new LambdaQueryWrapper<Binding>()
+                .eq(Binding::getQueueName, queueName));
+    }
 }

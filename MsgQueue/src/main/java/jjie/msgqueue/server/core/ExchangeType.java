@@ -1,6 +1,8 @@
 package jjie.msgqueue.server.core;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Data;
+
 
 public enum ExchangeType {
     DIRECT(0),//直接

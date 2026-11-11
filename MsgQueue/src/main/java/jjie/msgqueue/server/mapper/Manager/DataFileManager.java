@@ -7,11 +7,14 @@ import jjie.msgqueue.server.core.MsgQueue;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 public class DataFileManager {
     private static final int MAX_MSG_BYTES = 64 * 1024 * 1024;
@@ -86,14 +89,15 @@ public class DataFileManager {
     }
     //由下至上销毁一个队列的消息文件
     public void destroyQueueFiles(String queueName) throws IOException{
-        File queueDataPath=new File(getQueueDataPath(queueName));
-        boolean ret1=queueDataPath.delete();
-        File queueStaPath=new File(getQueueStaPath(queueName));
-        boolean ret2=queueStaPath.delete();
-        File queueFileDir=new File(getQueueDir(queueName));
-        boolean ret3=queueFileDir.delete();
-
-        if(!ret1 || !ret2 || !ret3) throw new IOException("删除文件失败");
+        Path dir = Paths.get(getQueueDir(queueName));
+        if (!Files.exists(dir)) {
+            return;   // 已经没了就当删成功, 删除操作本来就该幂等
+        }
+        try (Stream<Path> walk = Files.walk(dir)) {
+            for (Path p : walk.sorted(Comparator.reverseOrder()).toList()) {
+                Files.deleteIfExists(p);   // 顺手清掉 data_new.txt / sta.txt.tmp 这些残留
+            }
+        }
     }
     public boolean checkFilesExists(String queueName) {
         // 判定队列的数据文件和统计文件是否都存在!!
@@ -135,6 +139,10 @@ public class DataFileManager {
     }
     //删除某一个消息
     public void deleteMessage(MsgQueue queue,Message message) throws IOException, ClassNotFoundException, MqException {
+        if (message.getOffsetS() == null || message.getOffsetE() == null) {
+            // 没落过盘的消息, 磁盘上没有它的痕迹, 直接返回
+            return;
+        }
         synchronized (lockOf(queue.getName())) {
             //采取随机读写的方式
             try(RandomAccessFile randomAccessFile=new RandomAccessFile(
@@ -154,9 +162,12 @@ public class DataFileManager {
                 }
 
                 tem.setIsValid((byte) 0x0);
-                msg=BinaryTool.toBinary(tem);
+                byte[] rewritten = BinaryTool.toBinary(tem);
+                if (rewritten.length != (offsetEnd - offsetStart)) {
+                    throw new MqException("[DataFileManager] 序列化长度变化, 拒绝回写: " + queue.getName());
+                }
                 randomAccessFile.seek(offsetStart);
-                randomAccessFile.write(msg);
+                randomAccessFile.write(rewritten);
                 //更新sta.txt文件
                 Sta sta=(Sta)readSta(queue.getName());
                 if(sta.validCount>0) sta.validCount--;
@@ -184,10 +195,10 @@ public class DataFileManager {
                         System.out.println("[DataFileManager] 加载全部消息完毕!");
                         break;
                     }
-                    byte[] message=new byte[length];
-                    if (length == 0 || length > MAX_MSG_BYTES)
+                    if (length <= 0 || length > MAX_MSG_BYTES) {
                         throw new MqException("[DataFileManager] 消息长度非法: " + length + ", queue=" + queueName);
-
+                    }
+                    byte[] message = new byte[length];
                     try {
                         dataInputStream.readFully(message);            // EOF 在这里 = 文件损坏
                     } catch (EOFException e) {

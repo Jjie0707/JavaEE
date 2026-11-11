@@ -24,6 +24,8 @@ public class Message implements Serializable {
         return ret;
     }
 
+    public String getRoutingKey(){return this.getBasicProperties().getRoutingKey();}
+    public int getDeliverMode(){return this.getBasicProperties().getDeliverMode();}
     public void setRoutingKey(String routingKey){
         this.getBasicProperties().setRoutingKey(routingKey);
     }
