@@ -8,6 +8,7 @@ import jjie.msgqueue.server.core.MsgQueue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -93,7 +94,7 @@ public class MemoryDataManager {
     }
 
     public ConcurrentHashMap<String, Binding> getBindings(String exchangeName) {
-        return bindingsMap.get(exchangeName);
+        return bindingsMap.getOrDefault(exchangeName, new ConcurrentHashMap<>());
     }
 
     public void deleteBinding(Binding binding) throws MqException {

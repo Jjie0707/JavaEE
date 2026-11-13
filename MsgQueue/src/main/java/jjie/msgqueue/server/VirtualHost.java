@@ -297,6 +297,10 @@ public class VirtualHost {
                 // 按照 fanout 和 topic 的方式来转发.
                 // 5. 找到该交换机关联的所有绑定, 并遍历这些绑定对象
                 ConcurrentHashMap<String, Binding> bindingsMap = memoryDataManager.getBindings(exchangeName);
+                if (bindingsMap.isEmpty()) {
+                    System.out.println("[VirtualHost] 交换机没有绑定, 消息被丢弃: " + exchangeName);
+                    return true;
+                }
                 for (Map.Entry<String, Binding> entry : bindingsMap.entrySet()) {
                     // 6. 获取到绑定对象, 判定对应的队列是否存在
                     Binding binding = entry.getValue();
