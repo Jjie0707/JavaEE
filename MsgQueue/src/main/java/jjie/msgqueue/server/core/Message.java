@@ -16,12 +16,24 @@ public class Message implements Serializable {
     //有效标识 0无效1有效(相当于逻辑删除 deleteFlag)
     private byte isValid=0x1;
 
-    public static Message getInstance(byte[] body,String routingKey,BasicProperties basicProperties){
-        Message ret=new Message();
-        if(basicProperties!=null) ret.basicProperties=basicProperties;
-        ret.basicProperties.setRoutingKey(routingKey);
-        ret.body=body;
-        return ret;
+    public static Message getInstance(
+            byte[] body,
+            String routingKey,
+            BasicProperties basicProperties) {
+
+        // 每个 Message 自带新的 BasicProperties，因此有独立的 ID。
+        Message message = new Message();
+
+        if (basicProperties != null) {
+            message.basicProperties.setDeliverMode(
+                    basicProperties.getDeliverMode()
+            );
+        }
+
+        message.basicProperties.setRoutingKey(routingKey);
+        message.body = body;
+
+        return message;
     }
 
     public String getRoutingKey(){return this.getBasicProperties().getRoutingKey();}

@@ -8,7 +8,6 @@ import jjie.msgqueue.server.core.MsgQueue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,8 +20,6 @@ public class MemoryDataManager {
     private ConcurrentHashMap<String, MsgQueue> queueMap = new ConcurrentHashMap<>();
     // 第一个 key 是 exchangeName, 第二个 key 是 queueName(组织Binding)
     private ConcurrentHashMap<String, ConcurrentHashMap<String, Binding>> bindingsMap = new ConcurrentHashMap<>();
-    // key 是 messageId, value 是 Message 对象(组织message)
-    private ConcurrentHashMap<String, Message> messageMap = new ConcurrentHashMap<>();
     // key 是 queueName, value 是一个 Message 的链表(组织一个队列的所有消息)
     private ConcurrentHashMap<String, LinkedList<Message>> queueMessageMap = new ConcurrentHashMap<>();
     // 第一个 key 是 queueName, 第二个 key 是 messageId(组织未确认的消息)
@@ -107,36 +104,23 @@ public class MemoryDataManager {
                 + ", queueName=" + binding.getQueueName());
     }
 
-    // 添加消息
-    public void addMessage(Message message) {
-        messageMap.put(message.getBasicProperties().getId(), message);
-        System.out.println("[MemoryDataCenter] 新消息添加成功! messageId=" + message.getBasicProperties().getId());
-    }
-
-    // 根据 id 查询消息
-    public Message getMessage(String messageId) {
-        return messageMap.get(messageId);
-    }
-
-    // 根据 id 删除消息
-    public void removeMessage(String messageId) {
-        messageMap.remove(messageId);
-        System.out.println("[MemoryDataCenter] 消息被移除! messageId=" + messageId);
-    }
 
     // 发送消息到指定队列
     public void sendMessage(MsgQueue queue, Message message) {
-        // 把消息放到对应的队列数据结构中.
-        // 先根据队列的名字, 找到该队列对应的消息链表.
-        LinkedList<Message> messages = queueMessageMap.computeIfAbsent(queue.getName(), k -> new LinkedList<>());
-        // 再把数据加到 messages 里面
+        LinkedList<Message> messages = queueMessageMap.computeIfAbsent(
+                queue.getName(), name -> new LinkedList<>()
+        );
+
         synchronized (messages) {
-            messages.add(message);
+            messages.addLast(message);
         }
-        // 在这里把该消息也往消息中心中插入一下. 假设如果 message 已经在消息中心存在, 重复插入也没关系.
-        // 主要就是相同 messageId, 对应的 message 的内容一定是一样的. (服务器代码不会对 Message 内容做修改 basicProperties 和 body)
-        addMessage(message);
-        System.out.println("[MemoryDataCenter] 消息被投递到队列中! messageId=" + message.getBasicProperties().getId());
+
+        System.out.println(
+                "[MemoryDataManager] 消息进入队列! queueName="
+                        + queue.getName()
+                        + ", messageId="
+                        + message.getBasicProperties().getId()
+        );
     }
 
     // 从队列中取消息
@@ -171,7 +155,7 @@ public class MemoryDataManager {
     }
 
     // 添加未确认的消息
-    public void addMessageWaitAck(String queueName, Message message) {
+    public void addMessageUnAck(String queueName, Message message) {
         ConcurrentHashMap<String, Message> messageHashMap = queueMessageUnAckMap.computeIfAbsent(queueName,
                 k -> new ConcurrentHashMap<>());
         messageHashMap.put(message.getBasicProperties().getId(), message);
@@ -179,7 +163,7 @@ public class MemoryDataManager {
     }
 
     // 删除未确认的消息(消息已经确认了)
-    public void removeMessageWaitAck(String queueName, String messageId) {
+    public void removeMessageUnAck(String queueName, String messageId) {
         ConcurrentHashMap<String, Message> messageHashMap = queueMessageUnAckMap.get(queueName);
         if (messageHashMap == null) {
             return;
@@ -189,7 +173,7 @@ public class MemoryDataManager {
     }
 
     // 获取指定的未确认的消息
-    public Message getMessageWaitAck(String queueName, String messageId) {
+    public Message getMessageUnAck(String queueName, String messageId) {
         ConcurrentHashMap<String, Message> messageHashMap = queueMessageUnAckMap.get(queueName);
         if (messageHashMap == null) {
             return null;
@@ -203,7 +187,6 @@ public class MemoryDataManager {
         exchangeMap.clear();
         queueMap.clear();
         bindingsMap.clear();
-        messageMap.clear();
         queueMessageMap.clear();queueMessageUnAckMap.clear();
         // 1. 恢复所有的交换机数据
         List<Exchange> exchanges = diskDataManager.selectAllExchanges();
@@ -230,9 +213,7 @@ public class MemoryDataManager {
             try {
                 LinkedList<Message> messages = diskDataManager.loadAllMessageFromQueue(queue.getName());
                 queueMessageMap.put(queue.getName(), messages);
-                for (Message message : messages) {
-                    messageMap.put(message.getBasicProperties().getId(), message);
-                }
+
             } catch (Exception e) {
                 // 队列本身还能用, 只是历史消息读不出来, 先给个空链表
                 queueMessageMap.put(queue.getName(), new LinkedList<>());

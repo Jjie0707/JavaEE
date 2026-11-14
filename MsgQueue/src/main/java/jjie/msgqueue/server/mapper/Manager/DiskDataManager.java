@@ -88,11 +88,10 @@ public class DiskDataManager {
         dataFileManager.sendMessage(queue, message);
     }
 
-    public void deleteMessage(MsgQueue queue, Message message) throws IOException, ClassNotFoundException, MqException {
+    public void deleteMessage(MsgQueue queue, Message message)
+            throws IOException, ClassNotFoundException, MqException {
+
         dataFileManager.deleteMessage(queue, message);
-        if (dataFileManager.checkGc(queue.getName())) {
-            dataFileManager.gc(queue);
-        }
     }
 
     public LinkedList<Message> loadAllMessageFromQueue(String queueName) throws IOException, MqException, ClassNotFoundException {

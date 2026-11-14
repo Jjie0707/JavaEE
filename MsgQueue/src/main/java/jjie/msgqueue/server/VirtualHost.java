@@ -1,7 +1,9 @@
 package jjie.msgqueue.server;
 
+import jjie.msgqueue.common.Consumer;
 import jjie.msgqueue.common.MqException;
 import jjie.msgqueue.server.core.*;
+import jjie.msgqueue.server.mapper.Manager.ConsumerManager;
 import jjie.msgqueue.server.mapper.Manager.DiskDataManager;
 import jjie.msgqueue.server.mapper.Manager.MemoryDataManager;
 
@@ -14,7 +16,7 @@ public class VirtualHost {
     private MemoryDataManager memoryDataManager = new MemoryDataManager();
     private DiskDataManager diskDataManager = new DiskDataManager();
     private Router router = new Router();
-//    private ConsumerManager consumerManager = new ConsumerManager(this);
+    private ConsumerManager consumerManager = new ConsumerManager(this);
 
     // 操作交换机的锁对象
     private final Object exchangeLocker = new Object();
@@ -162,13 +164,16 @@ public class VirtualHost {
                 if (queue == null) {
                     throw new MqException("[VirtualHost] 队列不存在! 无法删除! queueName=" + queueName);
                 }
-                // 2. 删除硬盘数据
-                if (queue.getDurable()==1) {
-                    diskDataManager.deleteBindingsByQueue(queueName);         // ← 先删绑定
-                    diskDataManager.deleteQueue(queueName);
+                synchronized (queue) {
+                    //2. 删除硬盘数据。
+                    if (queue.getDurable() == 1) {
+                        diskDataManager.deleteBindingsByQueue(queueName);
+                        diskDataManager.deleteQueue(queueName);
+                    }
+
+                    //3. 删除内存数据。
+                    memoryDataManager.deleteQueue(queueName);
                 }
-                // 3. 删除内存数据
-                memoryDataManager.deleteQueue(queueName);
                 System.out.println("[VirtualHost] 删除队列成功! queueName=" + queueName);
             }
             return true;
@@ -331,68 +336,104 @@ public class VirtualHost {
         }
     }
 
-    private void sendMessage(MsgQueue queue, Message message) throws IOException, MqException, InterruptedException {
-        // 此处发送消息, 就是把消息写入到 硬盘 和 内存 上.
-        int deliverMode = message.getDeliverMode();
-        // deliverMode 为 1 表示持久化. deliverMode 为 0 表示不持久化.
-        if (deliverMode == 1) {
-            diskDataManager.sendMessage(queue, message);
-        }
-        // 写入内存
-        memoryDataManager.sendMessage(queue, message);
+    private void sendMessage(MsgQueue queue, Message message)
+            throws IOException, MqException, InterruptedException {
 
-        // 此处还需要补充一个逻辑, 通知消费者可以消费消息了.
-//        consumerManager.notifyConsume(queue.getName());
+        String queueName = queue.getName();
+        synchronized (queue) {
+            if (memoryDataManager.getQueue(queueName) != queue) {
+                throw new MqException(
+                        "[VirtualHost] 队列已经删除! queueName=" + queueName
+                );
+            }
+            if (message.getDeliverMode() == 1) {
+                diskDataManager.sendMessage(queue, message);
+            }
+            memoryDataManager.sendMessage(queue, message);
+        }
+        consumerManager.notifyConsume(queueName);
     }
 
-//    // 订阅消息.
-//    // 添加一个队列的订阅者, 当队列收到消息之后, 就要把消息推送给对应的订阅者.
-//    // consumerTag: 消费者的身份标识
-//    // autoAck: 消息被消费完成后, 应答的方式. 为 true 自动应答. 为 false 手动应答.
-//    // consumer: 是一个回调函数. 此处类型设定成函数式接口. 这样后续调用 basicConsume 并且传实参的时候, 就可以写作 lambda 样子了.
-//    public boolean basicConsume(String consumerTag, String queueName, boolean autoAck, Consumer consumer) {
-//        // 构造一个 ConsumerEnv 对象, 把这个对应的队列找到, 再把这个 Consumer 对象添加到该队列中.
-//        queueName = virtualHostName + queueName;
-//        try {
-//            consumerManager.addConsumer(consumerTag, queueName, autoAck, consumer);
-//            System.out.println("[VirtualHost] basicConsume 成功! queueName=" + queueName);
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("[VirtualHost] basicConsume 失败! queueName=" + queueName);
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    public boolean basicAck(String queueName, String messageId) {
-//        queueName = virtualHostName + queueName;
-//        try {
-//            // 1. 获取到消息和队列
-//            Message message = memoryDataManager.getMessage(messageId);
-//            if (message == null) {
-//                throw new MqException("[VirtualHost] 要确认的消息不存在! messageId=" + messageId);
-//            }
-//            MsgQueue queue = memoryDataManager.getQueue(queueName);
-//            if (queue == null) {
-//                throw new MqException("[VirtualHost] 要确认的队列不存在! queueName=" + queueName);
-//            }
-//            // 2. 删除硬盘上的数据
-//            if (message.getDeliverMode() == 2) {
-//                diskDataManager.deleteMessage(queue, message);
-//            }
-//            // 3. 删除消息中心中的数据
-//            memoryDataManager.removeMessage(messageId);
-//            // 4. 删除待确认的集合中的数据
-//            memoryDataManager.removeMessageWaitAck(queueName, messageId);
-//            System.out.println("[VirtualHost] basicAck 成功! 消息被成功确认! queueName=" + queueName
-//                    + ", messageId=" + messageId);
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("[VirtualHost] basicAck 失败! 消息确认失败! queueName=" + queueName
-//                    + ", messageId=" + messageId);
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    // 订阅消息.
+    // 添加一个队列的订阅者, 当队列收到消息之后, 就要把消息推送给对应的订阅者.
+    // consumerTag: 消费者的身份标识
+    // autoAck: 消息被消费完成后, 应答的方式. 为 true 自动应答. 为 false 手动应答.
+    // consumer: 是一个回调函数. 此处类型设定成函数式接口. 这样后续调用 basicConsume 并且传实参的时候, 就可以写作 lambda 样子了.
+    public boolean basicConsume(String consumerTag, String queueName, boolean autoAck, Consumer consumer) {
+        // 构造一个 ConsumerEnv 对象, 把这个对应的队列找到, 再把这个 Consumer 对象添加到该队列中.
+        queueName = virtualHostName + queueName;
+        try {
+            consumerManager.addConsumer(consumerTag, queueName, autoAck, consumer);
+            System.out.println("[VirtualHost] basicConsume 成功! queueName=" + queueName);
+            return true;
+        } catch (Exception e) {
+            System.out.println("[VirtualHost] basicConsume 失败! queueName=" + queueName);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 对外的手动 ACK 入口，queueName 使用调用方传入的名字。
+    public boolean basicAck(String queueName, String messageId) {
+        if (queueName == null || messageId == null) {
+            return false;
+        }
+
+        String fullQueueName = virtualHostName + queueName;
+        MsgQueue queue = memoryDataManager.getQueue(fullQueueName);
+
+        if (queue == null) {
+            return false;
+        }
+
+        return acknowledgeDelivery(queue, messageId);
+    }
+
+    // 自动 ACK 和手动 ACK 共用的确认逻辑。
+    // queue 是服务端已经找到的队列对象，名字已经带虚拟主机前缀。
+    public boolean acknowledgeDelivery(MsgQueue queue, String messageId) {
+        if (queue == null || messageId == null) {
+            return false;
+        }
+
+        String queueName = queue.getName();
+
+        synchronized (queue) {
+            // 防止队列删除、同名重建后，旧任务操作新队列。
+            if (memoryDataManager.getQueue(queueName) != queue) {
+                return false;
+            }
+
+            Message message =
+                    memoryDataManager.getMessageUnAck(queueName, messageId);
+
+            // 只允许确认这个队列中已经进入 unAck 的消息。
+            if (message == null) {
+                return false;
+            }
+
+            try {
+                // 先处理磁盘，成功后再移除内存中的待确认记录。
+                if (message.getDeliverMode() == 1) {
+                    diskDataManager.deleteMessage(queue, message);
+                }
+
+                memoryDataManager.removeMessageUnAck(queueName, messageId);
+
+                System.out.println(
+                        "[VirtualHost] ACK 成功! queueName="
+                                + queueName + ", messageId=" + messageId
+                );
+                return true;
+            } catch (Exception e) {
+                System.err.println(
+                        "[VirtualHost] ACK 失败，保留待确认记录! queueName="
+                                + queueName + ", messageId=" + messageId
+                );
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
 
 }
