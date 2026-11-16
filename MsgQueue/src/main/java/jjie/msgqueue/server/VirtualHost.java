@@ -420,6 +420,10 @@ public class VirtualHost {
 
                 memoryDataManager.removeMessageUnAck(queueName, messageId);
 
+                if (message.getDeliverMode() == 1) {
+                    tryCompactQueue(queue);
+                }
+
                 System.out.println(
                         "[VirtualHost] ACK 成功! queueName="
                                 + queueName + ", messageId=" + messageId
@@ -433,6 +437,23 @@ public class VirtualHost {
                 e.printStackTrace();
                 return false;
             }
+        }
+    }
+
+    // 由ack持有锁的时候调用该方法
+    private void tryCompactQueue(MsgQueue queue) {
+        String queueName = queue.getName();
+
+        try {
+            if (diskDataManager.checkGc(queueName)) {
+                diskDataManager.gc(
+                        queue,
+                        memoryDataManager.getMessagesForGc(queueName)
+                );
+            }
+        } catch (Exception e) {
+            System.err.println("[VirtualHost] 消息已确认，但 GC 失败: " + queueName);
+            e.printStackTrace();
         }
     }
 

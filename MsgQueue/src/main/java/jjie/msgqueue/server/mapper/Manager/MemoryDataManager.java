@@ -181,6 +181,26 @@ public class MemoryDataManager {
         return messageHashMap.get(messageId);
     }
 
+    // 调用方持有该队列的锁。复制集合，保留原 Message 对象。
+    public List<Message> getMessagesForGc(String queueName) {
+        List<Message> snapshot = new ArrayList<>();
+
+        LinkedList<Message> pending = queueMessageMap.get(queueName);
+        if (pending != null) {
+            synchronized (pending) {
+                snapshot.addAll(pending);
+            }
+        }
+
+        ConcurrentHashMap<String, Message> unAck =
+                queueMessageUnAckMap.get(queueName);
+        if (unAck != null) {
+            snapshot.addAll(unAck.values());
+        }
+
+        return snapshot;
+    }
+
     // 这个方法就是从硬盘上读取数据, 把硬盘中之前持久化存储的各个维度的数据都恢复到内存中.
     public void recovery(DiskDataManager diskDataManager) throws IOException, MqException, ClassNotFoundException {
         // 0. 清空之前的所有数据

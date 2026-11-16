@@ -84,31 +84,35 @@ public class ConsumerManager {
             return;
         }
 
-        ConsumerEnv consumerEnv = queue.chooseConsumer();
-        if (consumerEnv == null) {
-            return;
-        }
-
-        Message message =
-                parent.getMemoryDataManager().pollMessage(queueName);
-
-        if (message == null) {
+        if (queue.getConsumerEnvList().isEmpty()
+                || parent.getMemoryDataManager().getMessageCount(queueName) == 0) {
             return;
         }
 
         workerPool.submit(() -> {
             try {
-                String messageId = message.getBasicProperties().getId();
+                Message message;
+                ConsumerEnv consumerEnv;
 
-                // 必须先登记待确认记录，再执行消费者的回调。
                 synchronized (queue) {
                     if (parent.getMemoryDataManager().getQueue(queueName) != queue) {
                         return;
                     }
 
-                    parent.getMemoryDataManager()
-                            .addMessageUnAck(queueName, message);
+                    consumerEnv = queue.chooseConsumer();
+                    if (consumerEnv == null) {
+                        return;
+                    }
+
+                    message = parent.getMemoryDataManager().pollMessage(queueName);
+                    if (message == null) {
+                        return;
+                    }
+
+                    parent.getMemoryDataManager().addMessageUnAck(queueName, message);
                 }
+
+                String messageId = message.getBasicProperties().getId();
 
                 // 给消费者一份属性副本，ID 与服务端消息一致。
                 BasicProperties deliveryProperties = new BasicProperties();

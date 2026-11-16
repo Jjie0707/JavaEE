@@ -10,10 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -382,52 +379,112 @@ public class DataFileManager {
             return ret;
         }
     }
-    //判断是否要进行垃圾回收
     public boolean checkGc(String queueName) throws IOException {
-        Sta sta=(Sta)readSta(queueName);
-        // 有效消息数量小于一半时触发回收机制
-        if(sta.totalCount>=2000 && (sta.validCount)/(0.0+ sta.totalCount)<0.5){
-            return true;
-        }
-        return false;
-    }
-    //获取临时文件的名字
-    public String getNewQueueDataPath(String queueName){
-        return getQueueDir(queueName)+"/" +
-                "data_new.txt";
-    }
-    //进行垃圾回收(gc)
-    public void gc(MsgQueue queue) throws MqException, IOException, ClassNotFoundException {
-        synchronized(lockOf(queue.getName())) {
-            long startTime=System.currentTimeMillis();
-            // 新的data文件
-            File newDataFile=new File(getNewQueueDataPath(queue.getName()));
-             //本来不应该存在 存在说明出错
-            if(newDataFile.exists()){
-                throw new MqException("[DataFileManager] :垃圾回收失败,上次回收被中断....");
+        synchronized (lockOf(queueName)) {
+            if (queuesNeedingStatsRebuild.contains(queueName)) {
+                return false;
             }
-            //创建新文件
-            newDataFile.createNewFile();
-            LinkedList<Message> messages=getAllMessages(queue.getName());
-            try(OutputStream outputStream =new FileOutputStream(newDataFile)){
-                try(DataOutputStream dataOutputStream=new DataOutputStream(outputStream)){
-                    for(Message tem:messages){
-                        byte[] message=BinaryTool.toBinary(tem);
-                        dataOutputStream.writeInt(message.length);
-                        dataOutputStream.write(message);
-                    }
+
+            Sta sta = (Sta) readSta(queueName);
+            return sta.totalCount >= 2000 && sta.validCount * 2L < sta.totalCount;
+        }
+    }
+
+    private record OffsetChange(Message message, long start, long end) {}
+
+    public void gc(MsgQueue queue, List<Message> messages)
+            throws IOException, MqException, ClassNotFoundException {
+
+        if (!Thread.holdsLock(queue)) {
+            throw new IllegalStateException("GC 必须持有队列锁");
+        }
+
+        String queueName = queue.getName();
+
+        synchronized (lockOf(queueName)) {
+            // 用旧偏移找到原来的内存消息。纯内存消息没有磁盘位置。
+            Map<Long, Message> liveByOffset = new HashMap<>();
+            for (Message message : messages) {
+                if (message.getDeliverMode() != 1) {
+                    continue;
+                }
+
+                Long start = message.getOffsetS();
+                if (start == null || liveByOffset.putIfAbsent(start, message) != null) {
+                    throw new MqException("[GC] 内存消息偏移缺失或重复: " + queueName);
                 }
             }
-            //完成文件复制,重命名新文件
-            File dataFile=new File(getQueueDataPath(queue.getName()));
-            dataFile.delete();
-            newDataFile.renameTo(dataFile);
-            //更新sta文件
-            Sta sta=(Sta)readSta(queue.getName());
-            sta.validCount=messages.size();sta.totalCount=messages.size();
-            writeSta(queue.getName(),sta);
-            long endTime=System.currentTimeMillis();
-            System.out.println("[DataFileManager] :gc进行完成,共耗时"+(endTime-startTime)+"ms");
+
+            // 使用私有重载，仅扫描有效消息，此时先不写统计文件。
+            List<Message> storedMessages = getAllMessages(queueName, null);
+            List<OffsetChange> changes = new ArrayList<>();
+
+            Path target = Paths.get(getQueueDataPath(queueName));
+            Path temporary = Files.createTempFile(target.getParent(), "gc-", ".tmp");
+
+            try {
+                long nextRecord = 0;
+
+                try (DataOutputStream output = new DataOutputStream(
+                        new BufferedOutputStream(Files.newOutputStream(temporary)))) {
+
+                    for (Message stored : storedMessages) {
+                        Message live = liveByOffset.remove(stored.getOffsetS());
+
+                        if (live != null
+                                && (!Objects.equals(live.getOffsetE(), stored.getOffsetE())
+                                || !Objects.equals(live.getBasicProperties().getId(),
+                                stored.getBasicProperties().getId()))) {
+                            throw new MqException("[GC] 内存和磁盘记录不匹配: " + queueName);
+                        }
+
+                        byte[] data = BinaryTool.toBinary(stored);
+                        long start = nextRecord + Integer.BYTES;
+                        long end = start + data.length;
+
+                        output.writeInt(data.length);
+                        output.write(data);
+
+                        if (live != null) {
+                            changes.add(new OffsetChange(live, start, end));
+                        }
+
+                        nextRecord = end;
+                    }
+                }
+
+                if (!liveByOffset.isEmpty()) {
+                    throw new MqException("[GC] 有内存消息未匹配到有效磁盘记录: " + queueName);
+                }
+
+                Files.move(temporary, target,
+                        StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                // 文件替换成功后，立即更新内存偏移。此时还持有队列锁。
+                // 替换成功之后 内存中的对象还是使用的原来的偏移量 用records里面的记录来更新偏移量
+                for (OffsetChange change : changes) {
+                    change.message().setOffsetS(change.start());
+                    change.message().setOffsetE(change.end());
+                }
+
+                int count = storedMessages.size();
+                try {
+                    writeSta(queueName, new Sta(count, count));
+                    queuesNeedingStatsRebuild.remove(queueName);
+                } catch (IOException e) {
+                    queuesNeedingStatsRebuild.add(queueName);
+                    System.err.println("[GC] 文件已压缩，统计等待重建: " + queueName);
+                    e.printStackTrace();
+                }
+            } finally {
+                try {
+                    Files.deleteIfExists(temporary);
+                } catch (IOException e) {
+                    System.err.println("[GC] 清理临时文件失败: " + temporary);
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
-package __1115;
+package _1115;
 
 public class T1 {
-    class TreeNode {
+    public class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;

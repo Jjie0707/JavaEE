@@ -94,6 +94,15 @@ public class DiskDataManager {
         dataFileManager.deleteMessage(queue, message);
     }
 
+    public boolean checkGc(String queueName) throws IOException {
+        return dataFileManager.checkGc(queueName);
+    }
+
+    public void gc(MsgQueue queue, List<Message> messages)
+            throws IOException, MqException, ClassNotFoundException {
+        dataFileManager.gc(queue, messages);
+    }
+
     public LinkedList<Message> loadAllMessageFromQueue(String queueName) throws IOException, MqException, ClassNotFoundException {
         return dataFileManager.getAllMessages(queueName);
     }
