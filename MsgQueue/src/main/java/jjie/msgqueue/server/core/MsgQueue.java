@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import jjie.msgqueue.common.ConsumerEnv;
+import jjie.msgqueue.common.consumer.ConsumerEnv;
 import lombok.Data;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;

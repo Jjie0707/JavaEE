@@ -1,4 +1,4 @@
-package jjie.msgqueue.common;
+package jjie.msgqueue.common.tools;
 
 import java.io.*;
 

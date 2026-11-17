@@ -1,6 +1,6 @@
 package jjie.msgqueue.server.mapper.Manager;
 
-import jjie.msgqueue.common.MqException;
+import jjie.msgqueue.common.exception.MqException;
 import jjie.msgqueue.server.core.Binding;
 import jjie.msgqueue.server.core.Exchange;
 import jjie.msgqueue.server.core.Message;

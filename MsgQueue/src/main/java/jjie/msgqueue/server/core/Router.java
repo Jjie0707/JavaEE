@@ -1,6 +1,6 @@
 package jjie.msgqueue.server.core;
 
-import jjie.msgqueue.common.MqException;
+import jjie.msgqueue.common.exception.MqException;
 
 public class Router {
     // 需要考虑通配符, 复杂一些

@@ -1,7 +1,7 @@
 package jjie.msgqueue.server;
 
-import jjie.msgqueue.common.Consumer;
-import jjie.msgqueue.common.MqException;
+import jjie.msgqueue.common.consumer.Consumer;
+import jjie.msgqueue.common.exception.MqException;
 import jjie.msgqueue.server.core.*;
 import jjie.msgqueue.server.mapper.Manager.ConsumerManager;
 import jjie.msgqueue.server.mapper.Manager.DiskDataManager;

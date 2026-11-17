@@ -1,8 +1,8 @@
 package jjie.msgqueue.server.mapper.Manager;
 
-import jjie.msgqueue.common.Consumer;
-import jjie.msgqueue.common.ConsumerEnv;
-import jjie.msgqueue.common.MqException;
+import jjie.msgqueue.common.consumer.Consumer;
+import jjie.msgqueue.common.consumer.ConsumerEnv;
+import jjie.msgqueue.common.exception.MqException;
 import jjie.msgqueue.server.VirtualHost;
 import jjie.msgqueue.server.core.BasicProperties;
 import jjie.msgqueue.server.core.Message;

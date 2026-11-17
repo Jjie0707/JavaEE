@@ -1,5 +1,6 @@
-package jjie.msgqueue.common;
+package jjie.msgqueue.common.consumer;
 
+import jjie.msgqueue.common.exception.MqException;
 import jjie.msgqueue.server.core.BasicProperties;
 
 import java.io.IOException;

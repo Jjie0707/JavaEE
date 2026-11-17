@@ -1,7 +1,7 @@
 package jjie.msgqueue.server.mapper.Manager;
 
-import jjie.msgqueue.common.BinaryTool;
-import jjie.msgqueue.common.MqException;
+import jjie.msgqueue.common.tools.BinaryTool;
+import jjie.msgqueue.common.exception.MqException;
 import jjie.msgqueue.server.core.Message;
 import jjie.msgqueue.server.core.MsgQueue;
 
