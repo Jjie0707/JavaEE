@@ -2,12 +2,13 @@ package jjie.msgqueue.common.returns;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class BasicReturns {
-    // 用来标识唯一的请求和响应.
+public class BasicReturns implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected String rid;
-    // 用来标识一个 channel
     protected String channelId;
-    // 表示当前这个远程调用方法的返回值
     protected boolean ok;
 }
