@@ -102,12 +102,14 @@ public class BrokerServer {
     private Request readRequest(DataInputStream dataInputStream) throws IOException {
         Request request = new Request();
         request.setType(dataInputStream.readInt());
-        request.setLength(dataInputStream.readInt());
-        byte[] payload = new byte[request.getLength()];
-        int n = dataInputStream.read(payload);
-        if (n != request.getLength()) {
-            throw new IOException("读取请求格式出错!");
+        int length = dataInputStream.readInt();
+        if (length < 0) {
+            throw new IOException("非法请求长度: " + length);
         }
+
+        byte[] payload = new byte[length];
+        dataInputStream.readFully(payload);
+        request.setLength(length);
         request.setPayload(payload);
         return request;
     }
@@ -126,15 +128,14 @@ public class BrokerServer {
         System.out.println("[Request] rid=" + basicArguments.getRid() + ", channelId=" + basicArguments.getChannelId()
                 + ", type=" + request.getType() + ", length=" + request.getLength());
         // 2. 根据 type 的值, 来进一步区分接下来这次请求要干啥.
+        String channelId = basicArguments.getChannelId();
         boolean ok = true;
         if (request.getType() == 0x1) {
-            // 创建 channel
-            sessions.put(basicArguments.getChannelId(), clientSocket);
-            System.out.println("[BrokerServer] 创建 channel 完成! channelId=" + basicArguments.getChannelId());
+            ok = channelId != null && sessions.putIfAbsent(channelId, clientSocket) == null;
+        } else if (channelId == null || sessions.get(channelId) != clientSocket) {
+            ok = false;
         } else if (request.getType() == 0x2) {
-            // 销毁 channel
-            sessions.remove(basicArguments.getChannelId());
-            System.out.println("[BrokerServer] 销毁 channel 完成! channelId=" + basicArguments.getChannelId());
+            ok = sessions.remove(channelId, clientSocket);
         } else if (request.getType() == 0x3) {
             ExchangeDeclareArguments arguments = (ExchangeDeclareArguments) basicArguments;
             ok = virtualHost.exchangeDeclare(arguments.getExchangeName(), arguments.getExchangeType(),

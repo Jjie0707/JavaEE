@@ -10,7 +10,7 @@ import lombok.Data;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -45,31 +45,47 @@ public class Connection {
         // 创建一个扫描线程, 由这个线程负责不停的从 socket 中读取响应数据. 把这个响应数据再交给对应的 channel 负责处理.
         Thread t = new Thread(() -> {
             try {
-                while (!socket.isClosed()) {
-                    Response response = readResponse();
-                    dispatchResponse(response);
+                while (true) {
+                    dispatchResponse(readResponse());
                 }
-            } catch (SocketException e) {
-                // 连接正常断开的. 此时这个异常直接忽略.
-                System.out.println("[Connection] 连接正常断开!");
-            } catch (IOException | ClassNotFoundException | MqException e) {
-                System.out.println("[Connection] 连接异常断开!");
-                e.printStackTrace();
+            } catch (IOException e) {
+                failConnection(e);
+            } catch (ClassNotFoundException | MqException | RuntimeException e) {
+                failConnection(new IOException("处理响应失败", e));
             }
         });
         t.start();
     }
 
     public void close() {
-        // 关闭 Connection 释放上述资源
-        try {
-            callbackPool.shutdownNow();
+        failConnection(new IOException("客户端主动关闭连接"));
+    }
+
+    void checkOpen() throws IOException {
+        IOException cause = closeCause;
+        if (cause != null) {
+            throw new IOException("连接已关闭", cause);
+        }
+    }
+
+    private void failConnection(IOException cause) {
+        List<Channel> channels;
+        synchronized (lifecycleLock) {
+            if (closeCause != null) {
+                return;
+            }
+            closeCause = cause;
+            channels = List.copyOf(channelMap.values());
             channelMap.clear();
-            inputStream.close();
-            outputStream.close();
+        }
+
+        channels.forEach(Channel::wakeWaiters);
+        try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            cause.addSuppressed(e);
+        } finally {
+            callbackPool.shutdownNow();
         }
     }
 
@@ -79,9 +95,10 @@ public class Connection {
             // 服务器推送来的消息数据
             SubscribeReturns subScribeReturns = (SubscribeReturns) BinaryTool.from(response.getPayload());
             // 根据 channelId 找到对应的 channel 对象
-            Channel channel = channelMap.get(subScribeReturns.getChannelId());
+            String channelId = subScribeReturns.getChannelId();
+            Channel channel = channelId == null ? null : channelMap.get(channelId);
             if (channel == null) {
-                throw new MqException("[Connection] 该消息对应的 channel 在客户端中不存在! channelId=" + subScribeReturns.getChannelId());
+                return;
             }
             // 执行该 channel 对象内部的回调.
             callbackPool.submit(() -> {
@@ -96,21 +113,30 @@ public class Connection {
             // 当前响应是针对刚才的控制请求的响应
             BasicReturns basicReturns = (BasicReturns) BinaryTool.from(response.getPayload());
             // 把这个结果放到对应的 channel 的 hash 表中.
-            Channel channel = channelMap.get(basicReturns.getChannelId());
+            String channelId = basicReturns.getChannelId();
+            Channel channel = channelId == null ? null : channelMap.get(channelId);
             if (channel == null) {
-                throw new MqException("[Connection] 该消息对应的 channel 在客户端中不存在! channelId=" + channel.getChannelId());
+                return;
             }
             channel.putReturns(basicReturns);
         }
     }
 
     // 发送请求
-    public void writeRequest(Request request) throws IOException {
-        dataOutputStream.writeInt(request.getType());
-        dataOutputStream.writeInt(request.getLength());
-        dataOutputStream.write(request.getPayload());
-        dataOutputStream.flush();
-        System.out.println("[Connection] 发送请求! type=" + request.getType() + ", length=" + request.getLength());
+    public synchronized void writeRequest(Request request) throws IOException {
+        checkOpen();
+        try {
+            dataOutputStream.writeInt(request.getType());
+            dataOutputStream.writeInt(request.getLength());
+            dataOutputStream.write(request.getPayload());
+            dataOutputStream.flush();
+        } catch (IOException e) {
+            failConnection(e);
+            throw e;
+        }
+
+        System.out.println("[Connection] 发送请求! type="
+                + request.getType() + ", length=" + request.getLength());
     }
 
     // 读取响应
@@ -132,18 +158,23 @@ public class Connection {
 
     // 通过这个方法, 在 Connection 中能够创建出一个 Channel
     public Channel createChannel() throws IOException {
-        String channelId = "C-" + UUID.randomUUID().toString();
+        String channelId = "C-" + UUID.randomUUID();
         Channel channel = new Channel(channelId, this);
         // 把这个 channel 对象放到 Connection 管理 channel 的 哈希表 中.
-        channelMap.put(channelId, channel);
-        // 同时也需要把 "创建 channel" 的这个消息也告诉服务器.
-        boolean ok = channel.createChannel();
-        if (!ok) {
-            // 服务器这里创建失败了!! 整个这次创建 channel 操作不顺利!!
-            // 把刚才已经加入 hash 表的键值对, 再删了.
-            channelMap.remove(channelId);
-            return null;
+        synchronized (lifecycleLock) {
+            checkOpen();
+            channelMap.put(channelId, channel);
         }
-        return channel;
+
+        boolean created = false;
+        try {
+            created = channel.createChannel();
+            return created ? channel : null;
+        } finally {
+            //这里也是,如果创建失败了的话,要回滚掉已经写入内存的数据
+            if (!created) {
+                channelMap.remove(channelId, channel);
+            }
+        }
     }
 }

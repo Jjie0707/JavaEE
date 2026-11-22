@@ -190,7 +190,6 @@ public class Router {
                 // [情况二] 如果遇到 * , 直接进入下一轮. * 可以匹配到任意一个部分!!
                 bindingIndex++;
                 routingIndex++;
-                continue;
             } else if (bindingTokens[bindingIndex].equals("#")) {
                 // 如果遇到 #, 需要先看看有没有下一个位置.
                 bindingIndex++;

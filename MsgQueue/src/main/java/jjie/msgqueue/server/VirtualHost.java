@@ -280,7 +280,6 @@ public class VirtualHost {
             if (exchange.getExchangeType() == ExchangeType.DIRECT) {
                 // 按照直接交换机的方式来转发消息
                 // 直接交换机就是指定一个队列名直接发送
-                //TODO
                 // 以 routingKey 作为队列的名字, 直接把消息写入指定的队列中.
 
                 String queueName = virtualHostName + routingKey;
