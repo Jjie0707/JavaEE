@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="620163d5-7712-49d8-a836-1cdde1edea93" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.workbuddy-ai/memory/2026-11-11.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.workbuddy-ai/memory/2026-11-14.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.workbuddy-ai/memory/MEMORY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/defaulttestQueue/data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/defaulttestQueue/sta.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/msgqueue.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/MsgQueueApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/client/Channel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/client/Connection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/client/ConnectionFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/Request.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/Response.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/BasicAckArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/BasicArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/BasicConsumeArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/BasicPublishArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/ExchangeDeclareArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/ExchangeDeleteArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/QueueBindArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/QueueDeclareArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/QueueDeleteArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/arguments/QueueUnbindArguments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/consumer/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/consumer/ConsumerEnv.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/exception/MqException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/returns/BasicReturns.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/returns/SubscribeReturns.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/common/tools/BinaryTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/demo/DemoConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/demo/DemoProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/BrokerServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/VirtualHost.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/BasicProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/Binding.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/Exchange.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/ExchangeType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/MsgQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/core/Router.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/BindingMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/ExchangeMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/Manager/ConsumerManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/Manager/DataBaseManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/Manager/DataFileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/Manager/DiskDataManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/Manager/MemoryDataManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/MetaMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjie/msgqueue/server/mapper/MsgQueueMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jjie/msgqueue/MsgQueueApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jjie/msgqueue/client/ClientBrokerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jjie/msgqueue/client/ClientProtocolTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jjie/msgqueue/client/ClientTestSupport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/jjie/msgqueue/server/mapper/DataBaseManagerTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="$USER_HOME$/Documents/Maven/.m2/repository" />
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+        <option name="useMavenConfig" value="false" />
+        <option name="userSettingsFile" value="$USER_HOME$/Documents/Maven/.m2/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3JjdLCHIoL2zGqByKuJDY8JGHWR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DemoConsumer.executor": "Run",
+    "Application.DemoProducer.executor": "Run",
+    "JUnit.DataBaseManagerTest.deleteBinding.executor": "Run",
+    "JUnit.DataManagerTest.deleteExchangeByname.executor": "Run",
+    "JUnit.DataManagerTest.deleteQueueByName.executor": "Run",
+    "JUnit.DataManagerTest.init.executor": "Run",
+    "JUnit.DataManagerTest.insertBinding.executor": "Run",
+    "JUnit.DataManagerTest.insertExchange.executor": "Run",
+    "JUnit.DataManagerTest.insertQueue.executor": "Run",
+    "JUnit.DataManagerTest.selectAllExchanges.executor": "Run",
+    "JUnit.DataManagerTest.selectAllQueues.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "New/updated database configurations found",
+    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.MsgQueueApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="jjie.msgqueue.server.mapper" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.DemoProducer">
+    <configuration name="DemoConsumer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="jjie.msgqueue.demo.DemoConsumer" />
+      <module name="MsgQueue" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jjie.msgqueue.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DemoProducer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="jjie.msgqueue.demo.DemoProducer" />
+      <module name="MsgQueue" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jjie.msgqueue.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DataBaseManagerTest.deleteBinding" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MsgQueue" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jjie.msgqueue.server.mapper.Manager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jjie.msgqueue.server.mapper" />
+      <option name="MAIN_CLASS_NAME" value="jjie.msgqueue.server.mapper.DataBaseManagerTest" />
+      <option name="METHOD_NAME" value="deleteBinding" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DataBaseManagerTest.insertQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MsgQueue" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jjie.msgqueue.server.mapper.Manager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jjie.msgqueue.server.mapper" />
+      <option name="MAIN_CLASS_NAME" value="jjie.msgqueue.server.mapper.DataBaseManagerTest" />
+      <option name="METHOD_NAME" value="insertQueue" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DataBaseManagerTest.selectAllBindings" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MsgQueue" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jjie.msgqueue.server.mapper.Manager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jjie.msgqueue.server.mapper" />
+      <option name="MAIN_CLASS_NAME" value="jjie.msgqueue.server.mapper.DataBaseManagerTest" />
+      <option name="METHOD_NAME" value="selectAllBindings" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MsgQueueApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="MsgQueue" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="jjie.msgqueue.MsgQueueApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.DemoProducer" />
+        <item itemvalue="Application.DemoConsumer" />
+        <item itemvalue="JUnit.DataBaseManagerTest.deleteBinding" />
+        <item itemvalue="JUnit.DataBaseManagerTest.selectAllBindings" />
+        <item itemvalue="JUnit.DataBaseManagerTest.insertQueue" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="620163d5-7712-49d8-a836-1cdde1edea93" name="Changes" comment="" />
+      <created>1773104475113</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773104475113</updated>
+      <workItem from="1790178354704" duration="47974000" />
+      <workItem from="1791526665313" duration="25140000" />
+      <workItem from="1792048923600" duration="267000" />
+      <workItem from="1792049206931" duration="684000" />
+      <workItem from="1792049910424" duration="250205000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
